@@ -24,6 +24,21 @@ test.describe('Organizacion', () => {
     await expect(page.getByText('Jornada de Reforestacion en Parque Arvi')).toBeVisible();
   });
 
+  test('puede editar una actividad y guardar el cambio', async ({ page }) => {
+    await login(page, USERS.org);
+    await page.goto('/organizacion/actividades');
+    // El primer boton "Editar" lleva al editor
+    await page.locator('[data-testid^="btn-editar-"]').first().click();
+    await expect(page).toHaveURL(/\/organizacion\/actividad\/\d+\/editar/);
+    const titulo = page.getByTestId('input-titulo');
+    await expect(titulo).not.toHaveValue('');
+    await titulo.fill('Titulo editado por test E2E');
+    await page.getByTestId('btn-guardar-actividad').click();
+    await expect(page.getByTestId('editar-exito')).toBeVisible();
+    await expect(page).toHaveURL(/\/organizacion\/actividades/, { timeout: 5000 });
+    await expect(page.getByText('Titulo editado por test E2E')).toBeVisible();
+  });
+
   test('solicitudes muestra la inscripcion semilla en pestaña Aprobadas', async ({ page }) => {
     await login(page, USERS.org);
     await page.goto('/organizacion/inscripciones');

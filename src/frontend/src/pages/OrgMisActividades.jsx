@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Plus, Calendar, MapPin, Users, Trash2, Ban } from 'lucide-react';
+import { Plus, Calendar, MapPin, Users, Trash2, Ban, Pencil } from 'lucide-react';
 import { actividades, perfil as perfilApi } from '../services/api.js';
 import { Button } from '../components/Button.jsx';
 import { Badge } from '../components/Badge.jsx';
@@ -70,7 +70,12 @@ export function OrgMisActividades() {
             <li key={a.id_actividad} className="card p-4 flex flex-col md:flex-row md:items-center md:justify-between gap-3">
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2">
-                  <h3 className="font-semibold text-surface-900 line-clamp-1">{a.titulo}</h3>
+                  <Link
+                    to={`/organizacion/actividad/${a.id_actividad}/editar`}
+                    className="font-semibold text-surface-900 hover:text-primary-700 line-clamp-1"
+                  >
+                    {a.titulo}
+                  </Link>
                   <Badge value={a.estado_actividad} kind="actividad" />
                 </div>
                 <div className="flex flex-wrap gap-3 text-xs text-surface-500 mt-1">
@@ -80,6 +85,13 @@ export function OrgMisActividades() {
                 </div>
               </div>
               <div className="flex items-center gap-2">
+                <Link
+                  to={`/organizacion/actividad/${a.id_actividad}/editar`}
+                  className="btn btn-secondary"
+                  data-testid={`btn-editar-${a.id_actividad}`}
+                >
+                  <Pencil size={14} /> Editar
+                </Link>
                 {a.estado_actividad !== 'CANCELADA' && (
                   <Button variant="secondary" onClick={() => setConfirmacion({ ...a, accion: 'cancelar' })}>
                     <Ban size={14} /> Cancelar

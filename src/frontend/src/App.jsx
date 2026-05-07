@@ -15,6 +15,7 @@ import { VolMisInscripciones } from './pages/VolMisInscripciones.jsx';
 import { OrgDashboard } from './pages/OrgDashboard.jsx';
 import { OrgMisActividades } from './pages/OrgMisActividades.jsx';
 import { OrgPublicarActividad } from './pages/OrgPublicarActividad.jsx';
+import { OrgEditarActividad } from './pages/OrgEditarActividad.jsx';
 import { OrgInscripciones } from './pages/OrgInscripciones.jsx';
 
 import { AdminDashboard } from './pages/AdminDashboard.jsx';
@@ -43,6 +44,7 @@ export default function App() {
           <Route path="/organizacion" element={<ProtectedRoute roles={['ORGANIZACION']}><OrgDashboard /></ProtectedRoute>} />
           <Route path="/organizacion/actividades" element={<ProtectedRoute roles={['ORGANIZACION']}><OrgMisActividades /></ProtectedRoute>} />
           <Route path="/organizacion/publicar" element={<ProtectedRoute roles={['ORGANIZACION']}><OrgPublicarActividad /></ProtectedRoute>} />
+          <Route path="/organizacion/actividad/:id/editar" element={<ProtectedRoute roles={['ORGANIZACION']}><OrgEditarActividad /></ProtectedRoute>} />
           <Route path="/organizacion/inscripciones" element={<ProtectedRoute roles={['ORGANIZACION']}><OrgInscripciones /></ProtectedRoute>} />
 
           <Route path="/admin" element={<ProtectedRoute roles={['ADMIN']}><AdminDashboard /></ProtectedRoute>} />

@@ -67,7 +67,7 @@ export function OrgDashboard() {
         ) : (
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {acts.slice(0, 3).map((a) => (
-              <ActivityCard key={a.id_actividad} actividad={a} to={`/voluntario/actividad/${a.id_actividad}`} />
+              <ActivityCard key={a.id_actividad} actividad={a} to={`/organizacion/actividad/${a.id_actividad}/editar`} />
             ))}
           </div>
         )}
