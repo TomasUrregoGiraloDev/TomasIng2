@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import { ArrowLeft, Calendar, MapPin, Users, Star } from 'lucide-react';
+import { ArrowLeft, Calendar, MapPin, Users, Star, ExternalLink } from 'lucide-react';
 import { actividades, inscripciones, resenas } from '../services/api.js';
 import { Button } from '../components/Button.jsx';
 import { Modal } from '../components/Modal.jsx';
@@ -106,7 +106,7 @@ export function VolDetalleActividad() {
           <div className="card p-5 sticky top-4 space-y-4">
             <h2 className="text-base font-semibold text-surface-900">Detalles</h2>
             <Detalle icon={Calendar} label="Fecha y hora" value={formatearFechaCompleta(actividad.fecha_evento)} />
-            <Detalle icon={MapPin} label="Ubicacion" value={`${actividad.direccion || ''}${actividad.direccion ? ', ' : ''}${actividad.ciudad?.nombre_ciudad || ''}`} />
+            <DetalleUbicacion direccion={actividad.direccion} ciudad={actividad.ciudad?.nombre_ciudad} />
             <Detalle icon={Users} label="Cupos" value={`${actividad.cupos_disponibles} de ${actividad.cupos_totales} disponibles`} />
 
             {cancelada ? (
@@ -158,6 +158,33 @@ function Detalle({ icon: Icon, label, value }) {
       <div>
         <p className="text-xs text-surface-500">{label}</p>
         <p className="text-sm font-medium text-surface-900">{value}</p>
+      </div>
+    </div>
+  );
+}
+
+function DetalleUbicacion({ direccion, ciudad }) {
+  const texto = [direccion, ciudad].filter(Boolean).join(', ');
+  const mapsUrl = texto
+    ? `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(texto)}`
+    : null;
+  return (
+    <div className="flex items-start gap-3">
+      <span className="text-primary-600 mt-0.5"><MapPin size={18} /></span>
+      <div className="min-w-0">
+        <p className="text-xs text-surface-500">Ubicacion</p>
+        <p className="text-sm font-medium text-surface-900">{texto || 'Sin ubicacion'}</p>
+        {mapsUrl && (
+          <a
+            href={mapsUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-1 text-xs font-medium text-primary-700 hover:underline mt-1"
+            data-testid="link-google-maps"
+          >
+            Ver en Google Maps <ExternalLink size={12} />
+          </a>
+        )}
       </div>
     </div>
   );

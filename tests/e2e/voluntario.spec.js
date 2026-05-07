@@ -38,4 +38,14 @@ test.describe('Voluntario', () => {
     await expect(page.getByTestId('lista-mis-inscripciones')).toBeVisible();
     await expect(page.getByText('Jornada de Reforestacion en Parque Arvi')).toBeVisible();
   });
+
+  test('detalle de actividad expone link a Google Maps con la direccion', async ({ page }) => {
+    await page.getByText('Jornada de Reforestacion en Parque Arvi').click();
+    const link = page.getByTestId('link-google-maps');
+    await expect(link).toBeVisible();
+    const href = await link.getAttribute('href');
+    expect(href).toContain('https://www.google.com/maps/search/');
+    expect(href).toContain(encodeURIComponent('Parque Arvi'));
+    expect(href).toContain(encodeURIComponent('Medellin'));
+  });
 });
