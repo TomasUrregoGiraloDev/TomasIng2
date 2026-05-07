@@ -1,0 +1,24 @@
+{
+  "name": "proyecto-tomas-apellido",
+  "version": "1.0.0",
+  "description": "Plataforma de voluntariado - Modulo Usuarios y Comunicaciones",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "install:all": "npm install && npm --prefix src/backend install && npm --prefix src/frontend install",
+    "db:up": "docker-compose up -d",
+    "db:down": "docker-compose down",
+    "db:reset": "docker-compose down -v && docker-compose up -d",
+    "backend:dev": "npm --prefix src/backend run dev",
+    "backend:seed": "npm --prefix src/backend run seed",
+    "frontend:dev": "npm --prefix src/frontend run dev",
+    "dev": "concurrently -n backend,frontend -c blue,green \"npm run backend:dev\" \"npm run frontend:dev\"",
+    "test:e2e": "playwright test",
+    "test:e2e:ui": "playwright test --ui"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.48.0",
+    "concurrently": "^9.0.1",
+    "dotenv": "^16.4.5"
+  }
+}
