@@ -2,6 +2,7 @@ import { Resena, Inscripcion, PerfilVoluntario } from '../models/index.js';
 import { HttpError } from '../middlewares/error.js';
 
 // CU-06 | RF-014 | E13 - registrarResena()
+// Permite multiples reseñas por inscripcion (ver DECISIONES.md #09).
 export async function crear(id_usuario, { id_inscripcion, calificacion, comentario }) {
   const ins = await Inscripcion.findByPk(id_inscripcion, {
     include: [{ model: PerfilVoluntario, as: 'voluntario' }],
@@ -13,26 +14,25 @@ export async function crear(id_usuario, { id_inscripcion, calificacion, comentar
   if (ins.estado_solicitud !== 'ASISTIO') {
     throw new HttpError(409, 'Solo puedes reseñar despues de asistir');
   }
-  const existente = await Resena.findOne({ where: { id_inscripcion } });
-  if (existente) throw new HttpError(409, 'Ya existe una reseña para esta inscripcion');
   return Resena.create({ id_inscripcion, calificacion, comentario });
 }
 
 export async function listarPorActividad(id_actividad) {
-  const inscripciones = await Inscripcion.findAll({
-    where: { id_actividad },
-    include: [
-      { model: Resena, as: 'resena' },
-      { model: PerfilVoluntario, as: 'voluntario', attributes: ['nombre', 'apellido'] },
-    ],
+  const resenas = await Resena.findAll({
+    include: [{
+      model: Inscripcion,
+      as: 'inscripcion',
+      where: { id_actividad },
+      attributes: ['id_inscripcion'],
+      include: [{ model: PerfilVoluntario, as: 'voluntario', attributes: ['nombre', 'apellido'] }],
+    }],
+    order: [['fecha_resena', 'DESC']],
   });
-  return inscripciones
-    .filter((i) => i.resena)
-    .map((i) => ({
-      id_resena: i.resena.id_resena,
-      calificacion: i.resena.calificacion,
-      comentario: i.resena.comentario,
-      voluntario: `${i.voluntario.nombre} ${i.voluntario.apellido}`,
-      fecha_resena: i.resena.fecha_resena,
-    }));
+  return resenas.map((r) => ({
+    id_resena: r.id_resena,
+    calificacion: r.calificacion,
+    comentario: r.comentario,
+    voluntario: `${r.inscripcion.voluntario.nombre} ${r.inscripcion.voluntario.apellido}`,
+    fecha_resena: r.fecha_resena,
+  }));
 }

@@ -43,8 +43,8 @@ Inscripcion.belongsTo(PerfilVoluntario, { foreignKey: 'id_voluntario', as: 'volu
 Actividad.hasMany(Inscripcion, { foreignKey: 'id_actividad', as: 'inscripciones' });
 Inscripcion.belongsTo(Actividad, { foreignKey: 'id_actividad', as: 'actividad' });
 
-// RESENA
-Inscripcion.hasOne(Resena, { foreignKey: 'id_inscripcion', as: 'resena' });
+// RESENA - una inscripcion puede tener varias reseñas (ver DECISIONES.md #09)
+Inscripcion.hasMany(Resena, { foreignKey: 'id_inscripcion', as: 'resenas' });
 Resena.belongsTo(Inscripcion, { foreignKey: 'id_inscripcion', as: 'inscripcion' });
 
 // MENSAJE

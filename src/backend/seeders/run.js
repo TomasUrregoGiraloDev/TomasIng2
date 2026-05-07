@@ -156,6 +156,24 @@ async function seedActividadesDemo() {
       cupos_disponibles: 9,
       imagen_url: 'https://images.unsplash.com/photo-1497486751825-1233686d5d80?w=800',
     },
+    {
+      titulo: 'Brigada de Bienestar Animal',
+      descripcion: 'Acompañamiento a refugio canino, jornada de aseo, alimentacion y socializacion con los animales.',
+      fecha_evento: '2026-04-20 09:00:00',
+      direccion: 'Refugio Patitas Felices, Belen',
+      cupos_totales: 20,
+      cupos_disponibles: 18,
+      imagen_url: 'https://images.unsplash.com/photo-1450778869180-41d0601e046e?w=800',
+    },
+    {
+      titulo: 'Festival de Lectura en Voz Alta',
+      descripcion: 'Voluntarios leen cuentos a niños de primera infancia en parques de la ciudad.',
+      fecha_evento: '2026-03-10 15:00:00',
+      direccion: 'Parque de los Deseos',
+      cupos_totales: 25,
+      cupos_disponibles: 22,
+      imagen_url: 'https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=800',
+    },
   ];
 
   for (const a of actividades) {
@@ -181,6 +199,44 @@ async function seedActividadesDemo() {
         estado_solicitud: 'APROBADA',
       },
     });
+
+    // Inscripcion ya en ASISTIO en la 4ta actividad: el voluntario puede probar
+    // el flujo de reseña sin esperar el ciclo completo (ver Mis Inscripciones).
+    const actAsistio = await Actividad.findOne({ where: { titulo: 'Brigada de Bienestar Animal' } });
+    if (actAsistio) {
+      await Inscripcion.findOrCreate({
+        where: { id_voluntario: voluntario.id_voluntario, id_actividad: actAsistio.id_actividad },
+        defaults: {
+          id_voluntario: voluntario.id_voluntario,
+          id_actividad: actAsistio.id_actividad,
+          estado_solicitud: 'ASISTIO',
+          horas_acreditadas: 4,
+        },
+      });
+    }
+
+    // Reseña ya creada en la 5ta actividad para que se vea en el detalle publico.
+    const actConResena = await Actividad.findOne({ where: { titulo: 'Festival de Lectura en Voz Alta' } });
+    if (actConResena) {
+      const [insResenada] = await Inscripcion.findOrCreate({
+        where: { id_voluntario: voluntario.id_voluntario, id_actividad: actConResena.id_actividad },
+        defaults: {
+          id_voluntario: voluntario.id_voluntario,
+          id_actividad: actConResena.id_actividad,
+          estado_solicitud: 'ASISTIO',
+          horas_acreditadas: 5,
+        },
+      });
+      const { Resena } = await import('../models/index.js');
+      await Resena.findOrCreate({
+        where: { id_inscripcion: insResenada.id_inscripcion },
+        defaults: {
+          id_inscripcion: insResenada.id_inscripcion,
+          calificacion: 5,
+          comentario: 'Excelente jornada, muy bien organizada y con impacto real en la comunidad.',
+        },
+      });
+    }
   }
 }
 

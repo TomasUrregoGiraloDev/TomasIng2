@@ -6,5 +6,5 @@ export const Resena = sequelize.define('Resena', {
   calificacion: { type: DataTypes.INTEGER, allowNull: false, validate: { min: 1, max: 5 } },
   comentario: { type: DataTypes.TEXT },
   fecha_resena: { type: DataTypes.DATE, defaultValue: DataTypes.NOW },
-  id_inscripcion: { type: DataTypes.INTEGER, allowNull: false, unique: true },
+  id_inscripcion: { type: DataTypes.INTEGER, allowNull: false },
 }, { tableName: 'RESENA' });

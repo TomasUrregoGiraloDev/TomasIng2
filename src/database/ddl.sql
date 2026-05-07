@@ -130,7 +130,7 @@ CREATE TABLE IF NOT EXISTS RESENA (
   calificacion   INT NOT NULL,
   comentario     TEXT,
   fecha_resena   DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  id_inscripcion INT NOT NULL UNIQUE,
+  id_inscripcion INT NOT NULL,
   CONSTRAINT fk_res_ins FOREIGN KEY (id_inscripcion) REFERENCES INSCRIPCION(id_inscripcion) ON DELETE CASCADE,
   CONSTRAINT chk_res_calif CHECK (calificacion BETWEEN 1 AND 5)
 ) ENGINE=InnoDB;
