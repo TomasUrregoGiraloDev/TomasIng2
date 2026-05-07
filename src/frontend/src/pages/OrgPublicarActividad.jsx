@@ -1,8 +1,15 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { actividades, catalogos } from '../services/api.js';
 import { Button } from '../components/Button.jsx';
 import { Input, Select, Textarea } from '../components/Input.jsx';
+import { ImageUploader } from '../components/ImageUploader.jsx';
+
+function ahoraInputValue() {
+  const d = new Date();
+  const pad = (n) => String(n).padStart(2, '0');
+  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+}
 
 export function OrgPublicarActividad() {
   const navigate = useNavigate();
@@ -10,6 +17,7 @@ export function OrgPublicarActividad() {
     titulo: '', descripcion: '', id_categoria: '', id_ciudad: '',
     fecha_evento: '', direccion: '', cupos_totales: '', imagen_url: '',
   });
+  const minFecha = useMemo(ahoraInputValue, []);
   const [cats, setCats] = useState([]);
   const [ciudades, setCiudades] = useState([]);
   const [error, setError] = useState(null);
@@ -26,6 +34,10 @@ export function OrgPublicarActividad() {
   const onSubmit = async (e) => {
     e.preventDefault();
     setError(null);
+    if (form.fecha_evento && new Date(form.fecha_evento).getTime() < Date.now() - 60_000) {
+      setError('La fecha y hora debe ser presente o futura');
+      return;
+    }
     setLoading(true);
     try {
       await actividades.crear({
@@ -60,10 +72,20 @@ export function OrgPublicarActividad() {
         </div>
         <Input label="Direccion" name="direccion" value={form.direccion} onChange={onChange} required data-testid="input-direccion" />
         <div className="grid sm:grid-cols-2 gap-3">
-          <Input label="Fecha y hora" type="datetime-local" name="fecha_evento" value={form.fecha_evento} onChange={onChange} required data-testid="input-fecha" />
+          <Input
+            label="Fecha y hora"
+            type="datetime-local"
+            name="fecha_evento"
+            value={form.fecha_evento}
+            onChange={onChange}
+            min={minFecha}
+            required
+            hint="Solo fechas presentes o futuras"
+            data-testid="input-fecha"
+          />
           <Input label="Cupos totales" type="number" min={1} name="cupos_totales" value={form.cupos_totales} onChange={onChange} required data-testid="input-cupos" />
         </div>
-        <Input label="URL de la imagen (opcional)" type="url" name="imagen_url" value={form.imagen_url} onChange={onChange} placeholder="https://..." />
+        <ImageUploader value={form.imagen_url} onChange={(v) => setForm((f) => ({ ...f, imagen_url: v }))} />
 
         {error && <div className="bg-red-50 border border-red-200 text-red-700 text-sm rounded p-3" data-testid="form-error">{error}</div>}
 

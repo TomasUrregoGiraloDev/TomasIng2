@@ -96,7 +96,7 @@ CREATE TABLE IF NOT EXISTS ACTIVIDAD (
   cupos_totales     INT NOT NULL DEFAULT 0,
   cupos_disponibles INT NOT NULL DEFAULT 0,
   estado_actividad  VARCHAR(20) NOT NULL DEFAULT 'PUBLICADA' COMMENT 'BORRADOR, PUBLICADA, EN_CURSO, FINALIZADA, CANCELADA',
-  imagen_url        VARCHAR(500),
+  imagen_url        LONGTEXT,
   id_organizacion   INT NOT NULL,
   id_categoria      INT NOT NULL,
   id_ciudad         INT NOT NULL,

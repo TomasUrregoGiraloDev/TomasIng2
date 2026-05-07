@@ -1,16 +1,26 @@
 import { z } from 'zod';
 import * as ActividadService from '../services/ActividadService.js';
 
+// Acepta URLs http(s) o data URIs base64 (cuando suben imagen desde el computador).
+const imagenSchema = z.union([
+  z.literal(''),
+  z.string().url(),
+  z.string().regex(/^data:image\/(png|jpe?g|gif|webp);base64,[A-Za-z0-9+/=]+$/, 'imagen invalida'),
+]).optional();
+
 export const schemas = {
   crear: z.object({
     titulo: z.string().min(3),
     descripcion: z.string().min(10),
     id_categoria: z.coerce.number().int(),
     id_ciudad: z.coerce.number().int(),
-    fecha_evento: z.string(),
+    fecha_evento: z.string().refine(
+      (v) => !Number.isNaN(Date.parse(v)) && new Date(v).getTime() >= Date.now() - 60_000,
+      { message: 'la fecha no puede estar en el pasado' },
+    ),
     direccion: z.string().min(3),
     cupos_totales: z.coerce.number().int().min(1),
-    imagen_url: z.string().url().optional().or(z.literal('')),
+    imagen_url: imagenSchema,
   }),
   actualizar: z.object({
     titulo: z.string().min(3).optional(),
@@ -22,7 +32,7 @@ export const schemas = {
     cupos_totales: z.coerce.number().int().min(1).optional(),
     cupos_disponibles: z.coerce.number().int().min(0).optional(),
     estado_actividad: z.enum(['BORRADOR', 'PUBLICADA', 'EN_CURSO', 'FINALIZADA', 'CANCELADA']).optional(),
-    imagen_url: z.string().url().optional().or(z.literal('')),
+    imagen_url: imagenSchema,
   }).strict(),
 };
 
