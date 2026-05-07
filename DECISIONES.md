@@ -109,3 +109,37 @@ Concentrar el esfuerzo de testing en 21 tests end-to-end con Playwright (Chromiu
 ¿Que artefacto de diseno respalda esta decision?
 - M1 Matriz de trazabilidad RF→Pruebas.
 - RNF-001..RNF-006 — todos validables desde Playwright midiendo tiempos de respuesta.
+
+## Decision #09 — Permitir multiples reseñas por inscripcion
+
+¿Que decidi?
+Quitar el `UNIQUE(id_inscripcion)` de la tabla `RESENA` para que un voluntario pueda dejar varias reseñas asociadas a la misma inscripcion.
+
+¿Por que?
+- En la primera defensa con la profesora vimos que el voluntario podia querer matizar su reseña inicial (agregar foto, completar comentario, dejar una segunda observacion al cabo de unos dias).
+- Sin la restriccion UNIQUE, el modelo se vuelve mas flexible sin perder integridad referencial: cada reseña sigue ligada a una inscripcion concreta.
+
+¿Como afecta al diseño original (E11)?
+- El DDL original especificaba `id_inscripcion INT NOT NULL UNIQUE`. Lo cambiamos por `INT NOT NULL` sin UNIQUE.
+- La asociacion Sequelize pasa de `Inscripcion.hasOne(Resena)` a `Inscripcion.hasMany(Resena)`.
+- El service ya no chequea "ya existe reseña para esta inscripcion".
+
+¿Que artefacto de diseno respalda esta decision?
+- HU09 — el voluntario puede dejar calificaciones y comentarios.
+- E10 normalizacion 3FN — la nueva relacion sigue cumpliendo 3FN: cada `RESENA` depende totalmente de su PK simple (`id_resena`).
+
+## Decision #10 — Aceptar imagenes en base64 (data URI) ademas de URLs
+
+¿Que decidi?
+El campo `imagen_url` de `ACTIVIDAD` acepta tanto URLs HTTP/HTTPS como data URIs base64 (`data:image/jpeg;base64,...`). En BD pasa a tipo `LONGTEXT`.
+
+¿Por que?
+- Pedirle a una organizacion que suba la foto a un CDN externo y luego pegue la URL es friccion innecesaria. Las personas esperan poder elegir un archivo desde su computador.
+- El componente `ImageUploader` permite ambas opciones sin imponer la integracion con un servicio externo (que tampoco entra en alcance, ver `03-alcance.md`).
+
+¿Cuales son las desventajas?
+- Las imagenes base64 ocupan ~33% mas que el binario y viajan dentro del JSON de la BD. Por eso limitamos el tamaño en cliente a 800 KB.
+
+¿Que artefacto de diseno respalda esta decision?
+- E16 wireframes — todos los detalles de actividad muestran una imagen.
+- HU02 — la organizacion publica actividades.
