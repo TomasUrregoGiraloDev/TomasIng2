@@ -13,19 +13,25 @@ export function VolDetalleActividad() {
   const navigate = useNavigate();
   const [actividad, setActividad] = useState(null);
   const [resenasList, setResenasList] = useState([]);
-  const [yaInscrito, setYaInscrito] = useState(false);
+  const [miInscripcion, setMiInscripcion] = useState(null);
   const [modal, setModal] = useState(false);
+  const [modalResena, setModalResena] = useState(false);
   const [confirmando, setConfirmando] = useState(false);
   const [error, setError] = useState(null);
   const [exito, setExito] = useState(null);
 
-  useEffect(() => {
+  const recargar = () => {
     actividades.obtener(id).then(setActividad).catch((e) => setError(e.message));
     resenas.listarPorActividad(id).then(setResenasList).catch(() => {});
     inscripciones.listar().then((lista) => {
-      setYaInscrito(lista.some((i) => i.id_actividad === Number(id)));
+      setMiInscripcion(lista.find((i) => i.id_actividad === Number(id)) || null);
     }).catch(() => {});
-  }, [id]);
+  };
+
+  useEffect(recargar, [id]);
+
+  const yaInscrito = !!miInscripcion;
+  const puedeResenar = miInscripcion?.estado_solicitud === 'ASISTIO';
 
   const inscribirse = async () => {
     setConfirmando(true);
@@ -114,8 +120,15 @@ export function VolDetalleActividad() {
                 Esta actividad fue cancelada.
               </div>
             ) : yaInscrito ? (
-              <div className="bg-emerald-50 border border-emerald-200 text-emerald-700 text-sm rounded p-3">
-                Ya estas inscrito en esta actividad.
+              <div className="space-y-2">
+                <div className="bg-emerald-50 border border-emerald-200 text-emerald-700 text-sm rounded p-3">
+                  Estas inscrito. Estado: <Badge value={miInscripcion.estado_solicitud} kind="inscripcion" />
+                </div>
+                {puedeResenar && (
+                  <Button className="w-full" onClick={() => setModalResena(true)} data-testid="btn-calificar">
+                    <Star size={14} /> Calificar experiencia
+                  </Button>
+                )}
               </div>
             ) : actividad.cupos_disponibles === 0 ? (
               <Button disabled className="w-full">Sin cupos disponibles</Button>
@@ -147,7 +160,82 @@ export function VolDetalleActividad() {
           La organizacion revisara tu solicitud y te enviara una notificacion.
         </p>
       </Modal>
+
+      {modalResena && miInscripcion && (
+        <ModalResena
+          inscripcion={miInscripcion}
+          tituloActividad={actividad.titulo}
+          onClose={() => setModalResena(false)}
+          onGuardado={() => { setModalResena(false); recargar(); }}
+        />
+      )}
     </div>
+  );
+}
+
+function ModalResena({ inscripcion, tituloActividad, onClose, onGuardado }) {
+  const [calificacion, setCalificacion] = useState(5);
+  const [comentario, setComentario] = useState('');
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
+
+  const guardar = async () => {
+    setError(null);
+    setLoading(true);
+    try {
+      await resenas.crear({
+        id_inscripcion: inscripcion.id_inscripcion,
+        calificacion,
+        comentario,
+      });
+      onGuardado();
+    } catch (e) {
+      setError(e.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  return (
+    <Modal
+      open
+      onClose={onClose}
+      title="Calificar experiencia"
+      size="sm"
+      footer={
+        <>
+          <Button variant="secondary" onClick={onClose}>Cancelar</Button>
+          <Button onClick={guardar} loading={loading} data-testid="btn-enviar-resena">Enviar</Button>
+        </>
+      }
+    >
+      <div className="space-y-3">
+        <p className="text-sm text-surface-600">{tituloActividad}</p>
+        <div className="flex items-center gap-1" data-testid="estrellas-resena">
+          {[1, 2, 3, 4, 5].map((n) => (
+            <button
+              key={n}
+              type="button"
+              onClick={() => setCalificacion(n)}
+              className="p-1"
+              aria-label={`${n} estrellas`}
+              data-testid={`estrella-${n}`}
+            >
+              <Star size={22} className={n <= calificacion ? 'text-amber-500 fill-amber-500' : 'text-surface-300'} />
+            </button>
+          ))}
+        </div>
+        <textarea
+          className="input min-h-[96px]"
+          placeholder="Comentario (opcional)"
+          value={comentario}
+          onChange={(e) => setComentario(e.target.value)}
+          maxLength={1000}
+          data-testid="textarea-comentario"
+        />
+        {error && <div className="bg-red-50 border border-red-200 text-red-700 text-sm rounded p-3">{error}</div>}
+      </div>
+    </Modal>
   );
 }
 
