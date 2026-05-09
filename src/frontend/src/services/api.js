@@ -13,7 +13,10 @@ api.interceptors.request.use((config) => {
 api.interceptors.response.use(
   (r) => r,
   (error) => {
-    const message = error.response?.data?.error || error.message || 'Error de red';
+    const isNetworkError = !error.response && error.message === 'Network Error';
+    const message = isNetworkError
+      ? 'No se puede conectar al servidor. Asegurate de que npm run dev y Docker estén corriendo.'
+      : error.response?.data?.error || error.message || 'Error de red';
     const details = error.response?.data?.details;
     return Promise.reject({ message, details, status: error.response?.status });
   },
