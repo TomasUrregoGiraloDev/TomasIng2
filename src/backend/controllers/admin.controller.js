@@ -1,3 +1,10 @@
+// ============================================================
+// Controlador admin.controller
+// Tabla(s) BD : —
+// HU          : HU16, HU17
+// RF          : RF-015, RF-016, RF-017
+// RNF         : RNF-016, RNF-017
+// ============================================================
 import { z } from 'zod';
 import * as Service from '../services/AdminService.js';
 import * as CategoriaService from '../services/CategoriaService.js';

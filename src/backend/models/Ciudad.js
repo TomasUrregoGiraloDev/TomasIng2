@@ -1,3 +1,9 @@
+// ============================================================
+// Modelo Ciudad
+// Tabla(s) BD : CIUDAD
+// HU          : HU01, HU10
+// RF          : RF-001, RF-006
+// ============================================================
 import { DataTypes } from 'sequelize';
 import { sequelize } from '../config/db.js';
 

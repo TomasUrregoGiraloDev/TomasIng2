@@ -1,3 +1,9 @@
+// ============================================================
+// Configuracion db
+// Tabla(s) BD : —
+// HU          : HU10
+// RF          : RF-001
+// ============================================================
 import { Sequelize } from 'sequelize';
 import { env } from './env.js';
 

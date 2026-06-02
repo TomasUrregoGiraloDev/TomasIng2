@@ -1,3 +1,9 @@
+// ============================================================
+// Middleware auth
+// Tabla(s) BD : —
+// HU          : HU10, HU14, HU16, HU17
+// RF          : RF-001, RF-002, RF-003, RF-016, RF-017
+// ============================================================
 import { verifyToken } from '../utils/jwt.js';
 import { HttpError } from './error.js';
 

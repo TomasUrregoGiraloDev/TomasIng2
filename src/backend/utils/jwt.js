@@ -1,3 +1,9 @@
+// ============================================================
+// Utilidad jwt
+// Tabla(s) BD : —
+// HU          : HU10, HU14
+// RF          : RF-001, RF-002, RF-003
+// ============================================================
 import jwt from 'jsonwebtoken';
 import { env } from '../config/env.js';
 

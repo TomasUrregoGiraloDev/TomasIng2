@@ -1,3 +1,9 @@
+// ============================================================
+// Ruta catalogos.routes
+// Tabla(s) BD : CIUDAD, CATEGORIA
+// HU          : HU01, HU10
+// RF          : RF-001, RF-006
+// ============================================================
 import { Router } from 'express';
 import { Ciudad, Categoria } from '../models/index.js';
 

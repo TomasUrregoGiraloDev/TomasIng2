@@ -1,3 +1,10 @@
+// ============================================================
+// Modelo Inscripcion
+// Tabla(s) BD : INSCRIPCION
+// HU          : HU03, HU06
+// RF          : RF-007, RF-008, RF-009
+// RNF         : RNF-003, RNF-006
+// ============================================================
 import { DataTypes } from 'sequelize';
 import { sequelize } from '../config/db.js';
 

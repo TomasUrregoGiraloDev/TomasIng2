@@ -1,3 +1,9 @@
+// ============================================================
+// Ruta inscripciones.routes
+// Tabla(s) BD : —
+// HU          : HU03, HU05, HU06
+// RF          : RF-007, RF-008, RF-009
+// ============================================================
 import { Router } from 'express';
 import { authRequired, requireRol } from '../middlewares/auth.js';
 import { validate } from '../middlewares/validate.js';

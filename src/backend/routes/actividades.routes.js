@@ -1,3 +1,9 @@
+// ============================================================
+// Ruta actividades.routes
+// Tabla(s) BD : —
+// HU          : HU02, HU05
+// RF          : RF-005, RF-006
+// ============================================================
 import { Router } from 'express';
 import { authRequired, requireRol } from '../middlewares/auth.js';
 import { validate } from '../middlewares/validate.js';

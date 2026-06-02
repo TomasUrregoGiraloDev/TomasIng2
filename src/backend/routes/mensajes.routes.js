@@ -1,3 +1,9 @@
+// ============================================================
+// Ruta mensajes.routes
+// Tabla(s) BD : —
+// HU          : HU08, HU15
+// RF          : RF-012, RF-013
+// ============================================================
 import { Router } from 'express';
 import { authRequired } from '../middlewares/auth.js';
 import { validate } from '../middlewares/validate.js';

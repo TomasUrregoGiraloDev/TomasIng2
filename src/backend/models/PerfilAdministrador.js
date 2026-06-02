@@ -1,3 +1,10 @@
+// ============================================================
+// Modelo PerfilAdministrador
+// Tabla(s) BD : PERFIL_ADMIN
+// HU          : HU16, HU17
+// RF          : RF-016, RF-017
+// RNF         : RNF-016
+// ============================================================
 import { DataTypes } from 'sequelize';
 import { sequelize } from '../config/db.js';
 

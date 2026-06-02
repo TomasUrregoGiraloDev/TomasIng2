@@ -1,3 +1,9 @@
+// ============================================================
+// Modelo Rol
+// Tabla(s) BD : ROL
+// HU          : HU10
+// RF          : RF-001
+// ============================================================
 import { DataTypes } from 'sequelize';
 import { sequelize } from '../config/db.js';
 

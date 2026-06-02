@@ -1,3 +1,10 @@
+// ============================================================
+// Modelo Resena
+// Tabla(s) BD : RESENA
+// HU          : HU09
+// RF          : RF-014
+// RNF         : RNF-009
+// ============================================================
 import { DataTypes } from 'sequelize';
 import { sequelize } from '../config/db.js';
 

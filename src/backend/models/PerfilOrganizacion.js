@@ -1,3 +1,9 @@
+// ============================================================
+// Modelo PerfilOrganizacion
+// Tabla(s) BD : PERFIL_ORGANIZACION
+// HU          : HU02, HU14
+// RF          : RF-002, RF-003
+// ============================================================
 import { DataTypes } from 'sequelize';
 import { sequelize } from '../config/db.js';
 

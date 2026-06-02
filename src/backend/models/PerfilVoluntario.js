@@ -1,3 +1,9 @@
+// ============================================================
+// Modelo PerfilVoluntario
+// Tabla(s) BD : PERFIL_VOLUNTARIO
+// HU          : HU10, HU13
+// RF          : RF-001, RF-004
+// ============================================================
 import { DataTypes } from 'sequelize';
 import { sequelize } from '../config/db.js';
 

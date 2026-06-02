@@ -1,3 +1,9 @@
+// ============================================================
+// Middleware validate
+// Tabla(s) BD : —
+// HU          : HU10, HU14
+// RF          : RF-001, RF-002, RF-003
+// ============================================================
 import { HttpError } from './error.js';
 
 export const validate = (schema, source = 'body') => (req, _res, next) => {

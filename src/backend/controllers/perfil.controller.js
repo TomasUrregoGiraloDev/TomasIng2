@@ -1,3 +1,9 @@
+// ============================================================
+// Controlador perfil.controller
+// Tabla(s) BD : —
+// HU          : HU10, HU13, HU14
+// RF          : RF-002, RF-003, RF-004
+// ============================================================
 import { z } from 'zod';
 import * as PerfilService from '../services/PerfilService.js';
 

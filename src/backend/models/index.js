@@ -1,3 +1,9 @@
+// ============================================================
+// Modelo index
+// Tabla(s) BD : ROL, USUARIO, CIUDAD, CATEGORIA, PERFIL_VOLUNTARIO, PERFIL_ORGANIZACION, PERFIL_ADMIN, ACTIVIDAD, INSCRIPCION, RESENA, MENSAJE, NOTIFICACION
+// HU          : HU01, HU02, HU03, HU05, HU06, HU07, HU08, HU09, HU10, HU11, HU13, HU14, HU15, HU16, HU17
+// RF          : RF-001, RF-002, RF-003, RF-004, RF-005, RF-006, RF-007, RF-008, RF-009, RF-010, RF-011, RF-012, RF-013, RF-014, RF-015, RF-016, RF-017
+// ============================================================
 import { sequelize } from '../config/db.js';
 
 import { Rol } from './Rol.js';

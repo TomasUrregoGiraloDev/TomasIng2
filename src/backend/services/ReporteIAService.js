@@ -1,3 +1,10 @@
+// ============================================================
+// Servicio ReporteIAService
+// Tabla(s) BD : ACTIVIDAD, INSCRIPCION
+// HU          : HU04, HU12
+// RF          : RF-015
+// RNF         : RNF-004, RNF-012
+// ============================================================
 import { env } from '../config/env.js';
 import { HttpError } from '../middlewares/error.js';
 import { obtenerEstadisticas } from './AdminService.js';

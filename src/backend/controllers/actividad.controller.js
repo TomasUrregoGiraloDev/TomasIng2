@@ -1,3 +1,9 @@
+// ============================================================
+// Controlador actividad.controller
+// Tabla(s) BD : —
+// HU          : HU02, HU05
+// RF          : RF-005, RF-006
+// ============================================================
 import { z } from 'zod';
 import * as ActividadService from '../services/ActividadService.js';
 

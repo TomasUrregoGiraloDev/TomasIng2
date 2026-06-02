@@ -1,3 +1,10 @@
+// ============================================================
+// Servicio AdminService
+// Tabla(s) BD : PERFIL_ORGANIZACION, ACTIVIDAD
+// HU          : HU16, HU17
+// RF          : RF-015, RF-016, RF-017
+// RNF         : RNF-016, RNF-017
+// ============================================================
 import { Op } from 'sequelize';
 import {
   PerfilOrganizacion, Usuario, Ciudad, Actividad, Inscripcion, Categoria, PerfilVoluntario,

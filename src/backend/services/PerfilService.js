@@ -1,3 +1,9 @@
+// ============================================================
+// Servicio PerfilService
+// Tabla(s) BD : PERFIL_VOLUNTARIO, PERFIL_ORGANIZACION, PERFIL_ADMIN
+// HU          : HU10, HU13, HU14
+// RF          : RF-002, RF-003, RF-004
+// ============================================================
 import { Usuario, PerfilVoluntario, PerfilOrganizacion, PerfilAdmin, Ciudad } from '../models/index.js';
 import { HttpError } from '../middlewares/error.js';
 

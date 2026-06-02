@@ -1,3 +1,9 @@
+// ============================================================
+// Configuracion env
+// Tabla(s) BD : —
+// HU          : HU10
+// RF          : RF-001
+// ============================================================
 import dotenv from 'dotenv';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';

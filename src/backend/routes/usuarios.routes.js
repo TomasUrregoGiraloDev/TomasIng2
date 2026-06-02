@@ -1,3 +1,9 @@
+// ============================================================
+// Ruta usuarios.routes
+// Tabla(s) BD : USUARIO
+// HU          : HU10
+// RF          : RF-001
+// ============================================================
 import { Router } from 'express';
 import { Op } from 'sequelize';
 import { authRequired } from '../middlewares/auth.js';

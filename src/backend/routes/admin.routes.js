@@ -1,3 +1,9 @@
+// ============================================================
+// Ruta admin.routes
+// Tabla(s) BD : —
+// HU          : HU16, HU17
+// RF          : RF-015, RF-016, RF-017
+// ============================================================
 import { Router } from 'express';
 import { authRequired, requireRol } from '../middlewares/auth.js';
 import { validate } from '../middlewares/validate.js';

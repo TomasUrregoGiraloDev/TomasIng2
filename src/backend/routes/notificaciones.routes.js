@@ -1,3 +1,9 @@
+// ============================================================
+// Ruta notificaciones.routes
+// Tabla(s) BD : —
+// HU          : HU07, HU11
+// RF          : RF-010, RF-011
+// ============================================================
 import { Router } from 'express';
 import { authRequired } from '../middlewares/auth.js';
 import * as Ctrl from '../controllers/notificacion.controller.js';

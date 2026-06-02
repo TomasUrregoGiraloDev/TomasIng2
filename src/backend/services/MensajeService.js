@@ -1,3 +1,10 @@
+// ============================================================
+// Servicio MensajeService
+// Tabla(s) BD : MENSAJE, NOTIFICACION
+// HU          : HU08, HU15
+// RF          : RF-012, RF-013
+// RNF         : RNF-015
+// ============================================================
 import { Op } from 'sequelize';
 import { Mensaje, Usuario } from '../models/index.js';
 import { HttpError } from '../middlewares/error.js';

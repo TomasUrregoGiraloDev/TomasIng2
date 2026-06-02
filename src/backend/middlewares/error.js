@@ -1,3 +1,9 @@
+// ============================================================
+// Middleware error
+// Tabla(s) BD : —
+// HU          : HU10, HU14
+// RF          : RF-001, RF-002, RF-003
+// ============================================================
 export class HttpError extends Error {
   constructor(status, message, details) {
     super(message);

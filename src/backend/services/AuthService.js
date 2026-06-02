@@ -1,3 +1,10 @@
+// ============================================================
+// Servicio AuthService
+// Tabla(s) BD : USUARIO, PERFIL_VOLUNTARIO, PERFIL_ORGANIZACION, PERFIL_ADMIN
+// HU          : HU10, HU14
+// RF          : RF-001, RF-002, RF-003
+// RNF         : RNF-010
+// ============================================================
 import { Usuario, PerfilVoluntario, PerfilOrganizacion, PerfilAdmin, Rol, Ciudad } from '../models/index.js';
 import { hashPassword, verifyPassword } from '../utils/hash.js';
 import { signToken } from '../utils/jwt.js';

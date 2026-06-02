@@ -1,3 +1,10 @@
+// ============================================================
+// Modelo Notificacion
+// Tabla(s) BD : NOTIFICACION
+// HU          : HU07, HU11
+// RF          : RF-010, RF-011
+// RNF         : RNF-007, RNF-008
+// ============================================================
 import { DataTypes } from 'sequelize';
 import { sequelize } from '../config/db.js';
 

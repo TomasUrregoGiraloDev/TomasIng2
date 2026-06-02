@@ -1,3 +1,9 @@
+// ============================================================
+// Controlador mensaje.controller
+// Tabla(s) BD : —
+// HU          : HU08, HU15
+// RF          : RF-012, RF-013
+// ============================================================
 import { z } from 'zod';
 import * as Service from '../services/MensajeService.js';
 

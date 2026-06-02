@@ -1,3 +1,10 @@
+// ============================================================
+// Modelo Actividad
+// Tabla(s) BD : ACTIVIDAD
+// HU          : HU02, HU05
+// RF          : RF-005, RF-006
+// RNF         : RNF-001, RNF-003
+// ============================================================
 import { DataTypes } from 'sequelize';
 import { sequelize } from '../config/db.js';
 

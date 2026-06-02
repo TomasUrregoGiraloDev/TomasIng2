@@ -1,3 +1,10 @@
+// ============================================================
+// Servicio InscripcionService
+// Tabla(s) BD : INSCRIPCION, ACTIVIDAD
+// HU          : HU03, HU05, HU06
+// RF          : RF-007, RF-008, RF-009
+// RNF         : RNF-003, RNF-006
+// ============================================================
 import { Op } from 'sequelize';
 import {
   sequelize, Inscripcion, Actividad, PerfilVoluntario, PerfilOrganizacion, Categoria, Ciudad,

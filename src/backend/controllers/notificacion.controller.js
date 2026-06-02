@@ -1,3 +1,9 @@
+// ============================================================
+// Controlador notificacion.controller
+// Tabla(s) BD : —
+// HU          : HU07, HU11
+// RF          : RF-010, RF-011
+// ============================================================
 import * as Service from '../services/NotificacionService.js';
 
 export async function listar(req, res, next) {

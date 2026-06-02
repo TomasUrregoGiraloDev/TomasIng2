@@ -1,3 +1,9 @@
+// ============================================================
+// Controlador inscripcion.controller
+// Tabla(s) BD : —
+// HU          : HU03, HU05, HU06
+// RF          : RF-007, RF-008, RF-009
+// ============================================================
 import { z } from 'zod';
 import * as Service from '../services/InscripcionService.js';
 

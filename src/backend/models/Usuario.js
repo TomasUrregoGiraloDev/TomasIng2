@@ -1,3 +1,10 @@
+// ============================================================
+// Modelo Usuario
+// Tabla(s) BD : USUARIO
+// HU          : HU10, HU14
+// RF          : RF-001, RF-002, RF-003
+// RNF         : RNF-002, RNF-010
+// ============================================================
 import { DataTypes } from 'sequelize';
 import { sequelize } from '../config/db.js';
 

@@ -1,3 +1,9 @@
+// ============================================================
+// Modelo Categoria
+// Tabla(s) BD : CATEGORIA
+// HU          : HU01
+// RF          : RF-006
+// ============================================================
 import { DataTypes } from 'sequelize';
 import { sequelize } from '../config/db.js';
 

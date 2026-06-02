@@ -1,3 +1,9 @@
+// ============================================================
+// Configuracion server
+// Tabla(s) BD : —
+// HU          : HU10
+// RF          : RF-001
+// ============================================================
 import express from 'express';
 import cors from 'cors';
 import { env } from './config/env.js';

@@ -1,3 +1,9 @@
+// ============================================================
+// Servicio CategoriaService
+// Tabla(s) BD : CATEGORIA
+// HU          : HU01
+// RF          : RF-006
+// ============================================================
 import { Categoria } from '../models/index.js';
 import { HttpError } from '../middlewares/error.js';
 

@@ -1,3 +1,9 @@
+// ============================================================
+// Ruta resenas.routes
+// Tabla(s) BD : —
+// HU          : HU09
+// RF          : RF-014
+// ============================================================
 import { Router } from 'express';
 import { authRequired, requireRol } from '../middlewares/auth.js';
 import { validate } from '../middlewares/validate.js';

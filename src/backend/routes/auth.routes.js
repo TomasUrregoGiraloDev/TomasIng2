@@ -1,3 +1,9 @@
+// ============================================================
+// Ruta auth.routes
+// Tabla(s) BD : —
+// HU          : HU10, HU14
+// RF          : RF-001, RF-002, RF-003
+// ============================================================
 import { Router } from 'express';
 import { authRequired } from '../middlewares/auth.js';
 import { validate } from '../middlewares/validate.js';

@@ -1,3 +1,10 @@
+// ============================================================
+// Modelo Mensaje
+// Tabla(s) BD : MENSAJE
+// HU          : HU08, HU15
+// RF          : RF-012, RF-013
+// RNF         : RNF-015
+// ============================================================
 import { DataTypes } from 'sequelize';
 import { sequelize } from '../config/db.js';
 

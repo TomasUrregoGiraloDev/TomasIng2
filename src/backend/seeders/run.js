@@ -1,3 +1,9 @@
+// ============================================================
+// Seeder run
+// Tabla(s) BD : ROL, USUARIO, CIUDAD, CATEGORIA, PERFIL_VOLUNTARIO, PERFIL_ORGANIZACION, PERFIL_ADMIN, ACTIVIDAD, INSCRIPCION, RESENA
+// HU          : HU01, HU02, HU03, HU05, HU09, HU10, HU14
+// RF          : RF-001, RF-002, RF-003, RF-004, RF-005, RF-006, RF-007, RF-014
+// ============================================================
 import {
   sequelize,
   Rol,

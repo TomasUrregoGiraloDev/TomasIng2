@@ -1,3 +1,10 @@
+// ============================================================
+// Servicio ActividadService
+// Tabla(s) BD : ACTIVIDAD
+// HU          : HU02, HU05
+// RF          : RF-005, RF-006
+// RNF         : RNF-001
+// ============================================================
 import { Op } from 'sequelize';
 import {
   Actividad, Categoria, Ciudad, PerfilOrganizacion, Inscripcion,

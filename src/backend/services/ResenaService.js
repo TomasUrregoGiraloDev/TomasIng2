@@ -1,3 +1,10 @@
+// ============================================================
+// Servicio ResenaService
+// Tabla(s) BD : RESENA, INSCRIPCION
+// HU          : HU09
+// RF          : RF-014
+// RNF         : RNF-009
+// ============================================================
 import { Resena, Inscripcion, PerfilVoluntario } from '../models/index.js';
 import { HttpError } from '../middlewares/error.js';
 

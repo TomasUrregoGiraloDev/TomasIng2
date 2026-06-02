@@ -1,3 +1,9 @@
+// ============================================================
+// Controlador resena.controller
+// Tabla(s) BD : —
+// HU          : HU09
+// RF          : RF-014
+// ============================================================
 import { z } from 'zod';
 import * as Service from '../services/ResenaService.js';
 
