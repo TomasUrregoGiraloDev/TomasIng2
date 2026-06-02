@@ -22,6 +22,7 @@ import { AdminDashboard } from './pages/AdminDashboard.jsx';
 import { AdminOrganizaciones } from './pages/AdminOrganizaciones.jsx';
 import { AdminInscripciones } from './pages/AdminInscripciones.jsx';
 import { AdminReportes } from './pages/AdminReportes.jsx';
+import { AdminCategorias } from './pages/AdminCategorias.jsx';
 
 import { Mensajes } from './pages/Mensajes.jsx';
 import { Notificaciones } from './pages/Notificaciones.jsx';
@@ -51,6 +52,7 @@ export default function App() {
           <Route path="/admin/organizaciones" element={<ProtectedRoute roles={['ADMIN']}><AdminOrganizaciones /></ProtectedRoute>} />
           <Route path="/admin/inscripciones" element={<ProtectedRoute roles={['ADMIN']}><AdminInscripciones /></ProtectedRoute>} />
           <Route path="/admin/reportes" element={<ProtectedRoute roles={['ADMIN']}><AdminReportes /></ProtectedRoute>} />
+          <Route path="/admin/categorias" element={<ProtectedRoute roles={['ADMIN']}><AdminCategorias /></ProtectedRoute>} />
 
           <Route path="/mensajes" element={<ProtectedRoute><Mensajes /></ProtectedRoute>} />
           <Route path="/notificaciones" element={<ProtectedRoute><Notificaciones /></ProtectedRoute>} />

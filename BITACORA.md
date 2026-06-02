@@ -11,7 +11,9 @@ Cada entrada semanal lista el aporte de cada integrante por separado.
 
 ---
 
-## Semana 1 — hasta 2026-04-17 (Estructura del Proyecto)
+## Entrada #01 — 2026-04-17
+
+¿Que hice?
 
 ### Tomas
 
@@ -37,7 +39,9 @@ Cada entrada semanal lista el aporte de cada integrante por separado.
 
 ---
 
-## Semana 2 — hasta 2026-04-25 (Capa de Datos)
+## Entrada #02 — 2026-04-25
+
+¿Que hice?
 
 ### Tomas
 
@@ -69,7 +73,9 @@ Cada entrada semanal lista el aporte de cada integrante por separado.
 
 ---
 
-## Semana 3 — hasta 2026-05-02 (Logica de Negocio: Catalogos y Auth)
+## Entrada #03 — 2026-05-02
+
+¿Que hice?
 
 ### Tomas
 
@@ -94,7 +100,9 @@ Cada entrada semanal lista el aporte de cada integrante por separado.
 
 ---
 
-## Semana 4 — hasta 2026-05-09 (Primeras Tablas Transaccionales)
+## Entrada #04 — 2026-05-09
+
+¿Que hice?
 
 ### Tomas
 
@@ -127,7 +135,9 @@ Cada entrada semanal lista el aporte de cada integrante por separado.
 
 ---
 
-## Semana 5 — hasta 2026-05-16 (Segunda Tabla Transaccional + Reglas de Negocio)
+## Entrada #05 — 2026-05-16
+
+¿Que hice?
 
 ### Tomas
 
@@ -165,7 +175,9 @@ Regla de negocio implementada:
 
 ---
 
-## Semana 6 — hasta 2026-05-23 (Capa de Presentacion: Admin + IA + Pulido)
+## Entrada #06 — 2026-05-23
+
+¿Que hice?
 
 ### Tomas
 
@@ -203,7 +215,9 @@ Otras mejoras:
 
 ---
 
-## Semana 7 — hasta 2026-06-05 (Tests + Documentacion + Entrega Final)
+## Entrada #07 — 2026-06-05
+
+¿Que hice?
 
 ### Tomas
 

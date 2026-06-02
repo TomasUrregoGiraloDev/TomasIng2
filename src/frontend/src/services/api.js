@@ -83,4 +83,8 @@ export const admin = {
   estadisticas: () => api.get('/admin/estadisticas').then((r) => r.data),
   generarReporte: () => api.post('/admin/reportes/generar').then((r) => r.data),
   eliminarActividad: (id) => api.delete(`/admin/actividades/${id}`).then((r) => r.data),
+  listarCategorias: () => api.get('/admin/categorias').then((r) => r.data),
+  crearCategoria: (data) => api.post('/admin/categorias', data).then((r) => r.data),
+  actualizarCategoria: (id, data) => api.put(`/admin/categorias/${id}`, data).then((r) => r.data),
+  eliminarCategoria: (id) => api.delete(`/admin/categorias/${id}`).then((r) => r.data),
 };

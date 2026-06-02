@@ -1,9 +1,14 @@
 import { z } from 'zod';
 import * as Service from '../services/AdminService.js';
+import * as CategoriaService from '../services/CategoriaService.js';
 import * as ReporteIA from '../services/ReporteIAService.js';
 
 export const schemas = {
   cambiarEstadoOrg: z.object({ estado_verificacion: z.enum(['PENDIENTE', 'VERIFICADA', 'SUSPENDIDA']) }),
+  categoria: z.object({
+    nombre_categoria: z.string().min(2).max(50),
+    descripcion: z.string().max(255).optional(),
+  }),
 };
 
 export async function listarOrganizaciones(req, res, next) {
@@ -31,4 +36,26 @@ export async function estadisticas(_req, res, next) {
 export async function generarReporte(_req, res, next) {
   try { res.json(await ReporteIA.generarReporte()); }
   catch (e) { next(e); }
+}
+
+export async function listarCategorias(_req, res, next) {
+  try { res.json(await CategoriaService.listarCategorias()); }
+  catch (e) { next(e); }
+}
+
+export async function crearCategoria(req, res, next) {
+  try { res.status(201).json(await CategoriaService.crearCategoria(req.body)); }
+  catch (e) { next(e); }
+}
+
+export async function actualizarCategoria(req, res, next) {
+  try { res.json(await CategoriaService.actualizarCategoria(Number(req.params.id), req.body)); }
+  catch (e) { next(e); }
+}
+
+export async function eliminarCategoria(req, res, next) {
+  try {
+    await CategoriaService.eliminarCategoria(Number(req.params.id));
+    res.status(204).end();
+  } catch (e) { next(e); }
 }

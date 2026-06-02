@@ -5,7 +5,7 @@ import {
 import { HttpError } from '../middlewares/error.js';
 import { crearNotificacion } from './NotificacionService.js';
 
-// CU-08 + HU16 - Admin lista organizaciones
+// CU-11 | RF-016 | E13 - listarOrganizaciones()
 export async function listarOrganizaciones({ estado, q } = {}) {
   const where = {};
   if (estado) where.estado_verificacion = estado;
@@ -30,7 +30,7 @@ export async function listarOrganizaciones({ estado, q } = {}) {
   return orgs.map((o) => ({ ...o.toJSON(), total_actividades: mapa[o.id_organizacion] || 0 }));
 }
 
-// HU16 - Admin verifica organizaciones
+// CU-11 | RF-016 | E13 - cambiarEstadoOrganizacion()
 export async function cambiarEstadoOrganizacion(id_organizacion, nuevoEstado) {
   const valid = ['PENDIENTE', 'VERIFICADA', 'SUSPENDIDA'];
   if (!valid.includes(nuevoEstado)) throw new HttpError(400, 'Estado invalido');
@@ -48,14 +48,14 @@ export async function cambiarEstadoOrganizacion(id_organizacion, nuevoEstado) {
   return org;
 }
 
-// HU17 - Admin elimina contenido
+// CU-12 | RF-017 | E13 - eliminarActividad()
 export async function eliminarActividad(id_actividad) {
   const act = await Actividad.findByPk(id_actividad);
   if (!act) throw new HttpError(404, 'Actividad no encontrada');
   await act.destroy();
 }
 
-// RF-015 - Estadisticas
+// CU-03 | RF-015 | E13 - obtenerEstadisticas()
 export async function obtenerEstadisticas() {
   const [totalActividades, totalInscripciones, totalAprobadas, totalAsistencias, orgs, voluntarios] = await Promise.all([
     Actividad.count(),
