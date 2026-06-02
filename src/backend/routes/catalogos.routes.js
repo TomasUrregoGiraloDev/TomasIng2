@@ -5,9 +5,15 @@
 // RF          : RF-001, RF-006
 // ============================================================
 import { Router } from 'express';
-import { Ciudad, Categoria } from '../models/index.js';
+import { Ciudad, Categoria, Rol } from '../models/index.js';
 
 const router = Router();
+
+// RF-001 | HU10 - lista de roles del sistema
+router.get('/roles', async (_req, res, next) => {
+  try { res.json(await Rol.findAll({ order: [['id_rol', 'ASC']] })); }
+  catch (e) { next(e); }
+});
 
 router.get('/ciudades', async (_req, res, next) => {
   try { res.json(await Ciudad.findAll({ order: [['nombre_ciudad', 'ASC']] })); }
