@@ -130,6 +130,8 @@ Quitar el `UNIQUE(id_inscripcion)` de la tabla `RESENA` para que un voluntario p
 
 ## Decision #10 — Aceptar imagenes en base64 (data URI) ademas de URLs
 
+
+
 ¿Que decidi?
 El campo `imagen_url` de `ACTIVIDAD` acepta tanto URLs HTTP/HTTPS como data URIs base64 (`data:image/jpeg;base64,...`). En BD pasa a tipo `LONGTEXT`.
 
@@ -143,3 +145,133 @@ El campo `imagen_url` de `ACTIVIDAD` acepta tanto URLs HTTP/HTTPS como data URIs
 ¿Que artefacto de diseno respalda esta decision?
 - E16 wireframes — todos los detalles de actividad muestran una imagen.
 - HU02 — la organizacion publica actividades.
+
+---
+
+## Seccion: Cambios en el modelo de datos respecto al documento de diseno (24/04/2026)
+
+Esta seccion documenta cada diferencia entre el diccionario de datos / DDL del documento de ingenieria de software (version 24/04/2026) y el modelo implementado en el repositorio. El objetivo es garantizar trazabilidad completa sin alterar el codigo existente.
+
+---
+
+### Cambio M-01 — Tabla ACTIVIDAD: eliminacion de `horas_estimadas` y tabla catalogo `ESTADO_ACTIVIDAD`
+
+**Documento de diseno:** Definia `horas_estimadas INT NOT NULL` como columna de ACTIVIDAD, y una tabla catalogo separada `ESTADO_ACTIVIDAD (id_estado_actividad, nombre_estado)` con FK en ACTIVIDAD.
+
+**Implementacion actual:** Se elimino `horas_estimadas` y la tabla `ESTADO_ACTIVIDAD`. El estado se maneja con `estado_actividad VARCHAR(20) DEFAULT 'PUBLICADA'` directamente en ACTIVIDAD (valores: PUBLICADA, EN_CURSO, FINALIZADA, CANCELADA).
+
+**Razon del cambio:**
+- Las horas de una actividad son variables segun el voluntario; registrarlas en la actividad era un dato estimado sin utilidad real en las consultas de inscripcion.
+- Una tabla catalogo de 3-4 fijas no justifica un JOIN adicional en cada consulta; el enum Zod en codigo sirve como fuente de verdad (ver Decision #07).
+
+**Artefactos afectados:** E7 (diccionario de datos), E11 (DDL), E14 (diagrama de estados).
+
+---
+
+### Cambio M-02 — Tabla ACTIVIDAD: adicion de `cupos_disponibles` e `imagen_url`
+
+**Documento de diseno:** No definia los campos `cupos_disponibles` ni `imagen_url` en ACTIVIDAD.
+
+**Implementacion actual:** Se agregaron:
+- `cupos_disponibles INT NOT NULL DEFAULT 0` — permite mostrar "X de Y disponibles" en el frontend (ver Decision #05).
+- `imagen_url LONGTEXT` — acepta URL o base64 para la foto de portada de la actividad (ver Decision #10).
+
+**Razon del cambio:** Ambos campos son requeridos por los wireframes (E16) y no estaban contemplados en el documento inicial.
+
+**Artefactos afectados:** E7, E11, E16.
+
+---
+
+### Cambio M-03 — Tabla INSCRIPCION: ampliacion de estados y restriccion UNIQUE
+
+**Documento de diseno:** Definia una tabla catalogo `ESTADO_INSCRIPCION` con 3 estados: Pendiente, Aceptada, Asistio. La columna en INSCRIPCION era `id_estado_inscripcion INT FK`.
+
+**Implementacion actual:** Se elimino la tabla catalogo. Se usa `estado_solicitud VARCHAR(20) DEFAULT 'PENDIENTE'` con 5 estados: PENDIENTE, APROBADA, RECHAZADA, ASISTIO, NO_ASISTIO. Se agrego ademas la restriccion `UNIQUE (id_voluntario, id_actividad)` para evitar inscripciones duplicadas.
+
+**Razon del cambio:**
+- "Aceptada" se renombro a "APROBADA" para mayor claridad semantica.
+- Se agrego "RECHAZADA" (el documento solo tenia Aceptada/Asistio, sin contemplar el rechazo explicito — necesario para CU-07).
+- Se agrego "NO_ASISTIO" para diferenciar entre quien asistio y quien no, util para los reportes de impacto (RF-015).
+- La restriccion UNIQUE evita que un mismo voluntario se inscriba dos veces a la misma actividad sin necesidad de logica adicional en el servicio.
+
+**Artefactos afectados:** E7, E11, E14 (diagrama de estados de inscripcion), M11.
+
+---
+
+### Cambio M-04 — Tabla NOTIFICACION: eliminacion de tabla catalogo `TIPO_NOTIFICACION` y adicion de `titulo`
+
+**Documento de diseno:** Definia `TIPO_NOTIFICACION (id_tipo_notificacion, nombre_tipo)` como tabla catalogo separada, con FK en NOTIFICACION. El campo `mensaje` era `VARCHAR(255)`.
+
+**Implementacion actual:** Se elimino la tabla catalogo. Se usa `tipo VARCHAR(40) DEFAULT 'GENERAL'` inline. Se agrego `titulo VARCHAR(150) NOT NULL` y se amplio `mensaje` a `VARCHAR(500)`.
+
+**Razon del cambio:**
+- Misma razon que M-01: un catalogo de tipos fijos no justifica un JOIN en cada consulta de notificaciones.
+- El campo `titulo` es necesario para mostrar una cabecera en la campana de notificaciones del frontend antes de que el usuario expanda el mensaje completo.
+- El mensaje de 255 caracteres era insuficiente para notificaciones con contexto (nombre de actividad + organizacion + estado).
+
+**Artefactos afectados:** E7, E11.
+
+---
+
+### Cambio M-05 — Tabla PERFIL_ORGANIZACION: adicion de `telefono` y `estado_verificacion`
+
+**Documento de diseno:** No definia `telefono` ni `estado_verificacion` en PERFIL_ORGANIZACION. Tambien presentaba un typo en el diccionario: el campo aparecia como `nit_register` (incorrecto); en el DDL del mismo documento ya estaba correcto como `nit_registro`.
+
+**Implementacion actual:** Se agregaron:
+- `telefono VARCHAR(20) NULL` — requerido por el formulario de registro de organizaciones (E16).
+- `estado_verificacion VARCHAR(20) NOT NULL DEFAULT 'PENDIENTE'` — estados: PENDIENTE, VERIFICADA, SUSPENDIDA. Necesario para CU-11 (RF-016, HU16).
+
+**Razon del cambio:** El modulo de administracion (CU-11) requiere que el admin pueda verificar o suspender organizaciones, lo cual exige un campo de estado en el perfil. El telefono es un dato de contacto elemental solicitado en los wireframes del registro.
+
+**Artefactos afectados:** E7, E11, E2 (tabla de interacciones del Admin), CU-11.
+
+---
+
+### Cambio M-06 — Tabla PERFIL_ADMINISTRADOR renombrada a PERFIL_ADMIN; adicion de `nombre` y `apellido`
+
+**Documento de diseno:** Tabla llamada `perfil_administrador` con columnas `id_admin`, `nivel_acceso`, `id_usuario`.
+
+**Implementacion actual:** Tabla llamada `PERFIL_ADMIN` con columnas `id_admin`, `nombre VARCHAR(100) NOT NULL`, `apellido VARCHAR(100) NOT NULL`, `id_usuario`. Se elimino `nivel_acceso`.
+
+**Razon del cambio:**
+- En la version 1 todos los administradores tienen el mismo nivel de acceso; el campo `nivel_acceso` era prematuro para una sola instancia de admin.
+- El nombre y apellido son necesarios para mostrar quien realizo cada accion en el log de auditoria (RNF-017).
+- El nombre corto `PERFIL_ADMIN` sigue la convencion de los otros perfiles del sistema.
+
+**Artefactos afectados:** E7, E11.
+
+---
+
+### Cambio M-07 — Tabla MENSAJE: renombre de columnas y adicion de `leido`
+
+**Documento de diseno:** Columnas `id_remitente` e `id_destinatario` sin prefijo descriptivo.
+
+**Implementacion actual:** Columnas renombradas a `id_usuario_remitente` e `id_usuario_destinatario` para mayor claridad de la FK. Se agrego `leido BOOLEAN DEFAULT FALSE` para soportar el indicador de mensaje no leido en el frontend.
+
+**Razon del cambio:** Los nombres originales eran ambiguos en las consultas JOIN. El campo `leido` es requerido por el wireframe de mensajeria (E16) para mostrar el punto azul de mensaje nuevo.
+
+**Artefactos afectados:** E7, E11.
+
+---
+
+### Cambio M-08 — Tabla CIUDAD: adicion de `departamento`
+
+**Documento de diseno:** Solo `id_ciudad` y `nombre_ciudad`.
+
+**Implementacion actual:** Se agrego `departamento VARCHAR(100) NULL`.
+
+**Razon del cambio:** El filtro de busqueda de actividades (RF-006) permite filtrar por ciudad; mostrar el departamento junto al nombre de la ciudad evita ambiguedades entre ciudades homonimas de distintos departamentos.
+
+**Artefactos afectados:** E7, E11.
+
+---
+
+### Cambio M-09 — Objetivo especifico 3: modulo de inscripcion en lugar de algoritmos de recomendacion
+
+**Documento de diseno:** OE3 rezaba "implementar un modulo de emparejamiento asistido por algoritmos de recomendacion basicos".
+
+**Implementacion actual:** OE3 en el repositorio dice "implementar un modulo de inscripcion y aprobacion". El alcance (03-alcance.md) excluye explicitamente la recomendacion personalizada en esta version.
+
+**Razon del cambio:** La implementacion de algoritmos de filtrado colaborativo requeria un conjunto de datos historico suficientemente grande para ser util, y el tiempo disponible para la entrega no lo permitia. Se priorizo la solidez del flujo de inscripcion/aprobacion (CU-02, CU-07) sobre la recomendacion automatica, que queda como mejora futura documentada.
+
+**Artefactos afectados:** 05-objetivos-especificos.md, 03-alcance.md.
