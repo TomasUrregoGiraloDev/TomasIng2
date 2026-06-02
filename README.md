@@ -24,6 +24,14 @@ Tablas asignadas a Tomas (todas con trazabilidad en codigo):
 
 El modulo de Albert (`CATEGORIA`, `CIUDAD`, `ACTIVIDAD`, `INSCRIPCION`, `RESENA`) tambien esta implementado para que la aplicacion sea funcional de extremo a extremo, pero los comentarios de trazabilidad estan concentrados en el modulo de Tomas.
 
+## Framework elegido y justificacion
+
+**Backend: Node.js + Express + Sequelize**
+Se eligio JavaScript en el backend para compartir el mismo lenguaje con el frontend y reducir el cambio de contexto cognitivo. Express es minimalista y permite estructurar el proyecto en capas (routes → controllers → services → models) de forma explicita, lo que facilita la trazabilidad directa con los artefactos de diseno (E12, E13). Sequelize como ORM mapea uno a uno el DDL del documento E11 sin reescritura y permite definir las relaciones FK del diagrama de clases (E12) como asociaciones en codigo. Decision completa en `DECISIONES.md` (Decision #01).
+
+**Frontend: React + Vite + Tailwind CSS**
+React permite construir las vistas del mapa de navegacion (E15) como componentes independientes por rol, lo que coincide con la separacion de actores del diagrama de contexto (E3). Se descarto una libreria de UI externa (Material UI, Chakra) para mantener control total sobre el sistema de diseno definido en los wireframes (E16), evitando estilos por defecto que no corresponden al prototipo. Decision completa en `DECISIONES.md` (Decision #02).
+
 ## Stack
 
 | Capa | Tecnologia |
