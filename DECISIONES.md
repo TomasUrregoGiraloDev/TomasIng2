@@ -275,3 +275,20 @@ Esta seccion documenta cada diferencia entre el diccionario de datos / DDL del d
 **Razon del cambio:** La implementacion de algoritmos de filtrado colaborativo requeria un conjunto de datos historico suficientemente grande para ser util, y el tiempo disponible para la entrega no lo permitia. Se priorizo la solidez del flujo de inscripcion/aprobacion (CU-02, CU-07) sobre la recomendacion automatica, que queda como mejora futura documentada.
 
 **Artefactos afectados:** 05-objetivos-especificos.md, 03-alcance.md.
+
+---
+
+### Cambio M-10 — Tabla VOLUNTARIO_INTERESES: reemplazada por campo `intereses TEXT` en PERFIL_VOLUNTARIO
+
+**Documento de diseno:** Definia la tabla de union `VOLUNTARIO_INTERESES (id_voluntario PK/FK, id_categoria PK/FK)` para almacenar la relacion N:M entre voluntarios y categorias de interes.
+
+**Implementacion actual:** Se elimino la tabla `VOLUNTARIO_INTERESES`. En su lugar, `PERFIL_VOLUNTARIO` tiene el campo `intereses TEXT NULL`, que almacena los intereses del voluntario como texto libre (por ejemplo: "Medio Ambiente, Educacion"). No existe un JOIN a CATEGORIA para los intereses.
+
+**Razon del cambio:**
+- La funcionalidad de notificacion por intereses (RF-011) requiere cruzar los intereses del voluntario con las categorias de actividades nuevas. En la version actual, la notificacion de nuevas actividades se implementa como un aviso general (no filtrado por interes), lo que hace que la tabla de union sea prematura sin la logica de recomendacion (ver Cambio M-09).
+- Mantener la tabla VOLUNTARIO_INTERESES sin la logica de matching generaria deuda tecnica sin beneficio funcional inmediato.
+- El campo TEXT es suficiente para la v1: permite mostrar los intereses del voluntario en su perfil (RNF-010) sin requerir el JOIN adicional.
+
+**Impacto en RF-011:** La implementacion actual de RF-011 genera notificaciones en la plataforma cuando se aprueba o rechaza una inscripcion (tipo INSCRIPCION_APROBADA/RECHAZADA), no por coincidencia de categorias. El filtrado por interes queda documentado como mejora futura.
+
+**Artefactos afectados:** E7 (diccionario de datos), E11 (DDL), E12 (diagrama de clases), M7 (matriz de tablas).
