@@ -9,6 +9,7 @@ import { z } from 'zod';
 import * as Service from '../services/AdminService.js';
 import * as CategoriaService from '../services/CategoriaService.js';
 import * as ReporteIA from '../services/ReporteIAService.js';
+import * as NotificacionService from '../services/NotificacionService.js';
 
 export const schemas = {
   cambiarEstadoOrg: z.object({ estado_verificacion: z.enum(['PENDIENTE', 'VERIFICADA', 'SUSPENDIDA']) }),
@@ -17,6 +18,12 @@ export const schemas = {
     descripcion: z.string().max(255).optional(),
   }),
   rol: z.object({ nombre_rol: z.string().min(2).max(50) }),
+  notificacion: z.object({
+    id_usuario: z.coerce.number().int().positive(),
+    tipo: z.string().min(2).max(40),
+    titulo: z.string().min(2).max(150),
+    mensaje: z.string().min(2).max(500),
+  }),
 };
 
 export async function listarOrganizaciones(req, res, next) {
@@ -44,6 +51,26 @@ export async function estadisticas(_req, res, next) {
 export async function generarReporte(_req, res, next) {
   try { res.json(await ReporteIA.generarReporte()); }
   catch (e) { next(e); }
+}
+
+// CU-TRANSACCIONAL | RF-010 | E13 - listarNotificaciones()
+export async function listarNotificaciones(_req, res, next) {
+  try { res.json(await NotificacionService.listarTodas()); }
+  catch (e) { next(e); }
+}
+
+// CU-TRANSACCIONAL | RF-010 | E13 - crearNotificacion()
+export async function crearNotificacionAdmin(req, res, next) {
+  try { res.status(201).json(await NotificacionService.crearNotificacion(req.body)); }
+  catch (e) { next(e); }
+}
+
+// CU-TRANSACCIONAL | RF-011 | E13 - eliminarNotificacion()
+export async function eliminarNotificacion(req, res, next) {
+  try {
+    await NotificacionService.eliminar(Number(req.params.id));
+    res.status(204).end();
+  } catch (e) { next(e); }
 }
 
 // CU-MAESTRA | RF-001 | E13 - listarRoles()

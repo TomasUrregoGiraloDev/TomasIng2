@@ -1,8 +1,8 @@
 // ============================================================
 // Ruta admin.routes
-// Tabla(s) BD : ROL
+// Tabla(s) BD : ROL, NOTIFICACION
 // HU          : HU10, HU16, HU17
-// RF          : RF-001, RF-015, RF-016, RF-017
+// RF          : RF-001, RF-010, RF-011, RF-015, RF-016, RF-017
 // ============================================================
 import { Router } from 'express';
 import { authRequired, requireRol } from '../middlewares/auth.js';
@@ -24,4 +24,7 @@ router.get('/roles', Ctrl.listarRoles);
 router.post('/roles', validate(Ctrl.schemas.rol), Ctrl.crearRol);
 router.put('/roles/:id', validate(Ctrl.schemas.rol), Ctrl.actualizarRol);
 router.delete('/roles/:id', Ctrl.eliminarRol);
+router.get('/notificaciones', Ctrl.listarNotificaciones);
+router.post('/notificaciones', validate(Ctrl.schemas.notificacion), Ctrl.crearNotificacionAdmin);
+router.delete('/notificaciones/:id', Ctrl.eliminarNotificacion);
 export default router;
