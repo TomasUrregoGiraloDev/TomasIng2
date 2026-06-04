@@ -1,8 +1,8 @@
 // ============================================================
 // Controlador admin.controller
-// Tabla(s) BD : —
-// HU          : HU16, HU17
-// RF          : RF-015, RF-016, RF-017
+// Tabla(s) BD : ROL
+// HU          : HU10, HU16, HU17
+// RF          : RF-001, RF-015, RF-016, RF-017
 // RNF         : RNF-016, RNF-017
 // ============================================================
 import { z } from 'zod';
@@ -16,6 +16,7 @@ export const schemas = {
     nombre_categoria: z.string().min(2).max(50),
     descripcion: z.string().max(255).optional(),
   }),
+  rol: z.object({ nombre_rol: z.string().min(2).max(50) }),
 };
 
 export async function listarOrganizaciones(req, res, next) {
@@ -43,6 +44,32 @@ export async function estadisticas(_req, res, next) {
 export async function generarReporte(_req, res, next) {
   try { res.json(await ReporteIA.generarReporte()); }
   catch (e) { next(e); }
+}
+
+// CU-MAESTRA | RF-001 | E13 - listarRoles()
+export async function listarRoles(_req, res, next) {
+  try { res.json(await Service.listarRoles()); }
+  catch (e) { next(e); }
+}
+
+// CU-MAESTRA | RF-001 | E13 - crearRol()
+export async function crearRol(req, res, next) {
+  try { res.status(201).json(await Service.crearRol(req.body)); }
+  catch (e) { next(e); }
+}
+
+// CU-MAESTRA | RF-001 | E13 - actualizarRol()
+export async function actualizarRol(req, res, next) {
+  try { res.json(await Service.actualizarRol(Number(req.params.id), req.body)); }
+  catch (e) { next(e); }
+}
+
+// CU-MAESTRA | RF-001 | E13 - eliminarRol()
+export async function eliminarRol(req, res, next) {
+  try {
+    await Service.eliminarRol(Number(req.params.id));
+    res.status(204).end();
+  } catch (e) { next(e); }
 }
 
 export async function listarCategorias(_req, res, next) {

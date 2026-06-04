@@ -1,16 +1,47 @@
 // ============================================================
 // Servicio AdminService
-// Tabla(s) BD : PERFIL_ORGANIZACION, ACTIVIDAD
-// HU          : HU16, HU17
-// RF          : RF-015, RF-016, RF-017
+// Tabla(s) BD : PERFIL_ORGANIZACION, ACTIVIDAD, ROL
+// HU          : HU10, HU16, HU17
+// RF          : RF-001, RF-015, RF-016, RF-017
 // RNF         : RNF-016, RNF-017
 // ============================================================
 import { Op } from 'sequelize';
 import {
-  PerfilOrganizacion, Usuario, Ciudad, Actividad, Inscripcion, Categoria, PerfilVoluntario,
+  PerfilOrganizacion, Usuario, Ciudad, Actividad, Inscripcion, Categoria, PerfilVoluntario, Rol,
 } from '../models/index.js';
 import { HttpError } from '../middlewares/error.js';
 import { crearNotificacion } from './NotificacionService.js';
+
+// CU-MAESTRA | RF-001 | E13 - listarRoles()
+export async function listarRoles() {
+  return Rol.findAll({ order: [['id_rol', 'ASC']] });
+}
+
+// CU-MAESTRA | RF-001 | E13 - crearRol()
+export async function crearRol({ nombre_rol }) {
+  const existe = await Rol.findOne({ where: { nombre_rol } });
+  if (existe) throw new HttpError(409, 'Ya existe un rol con ese nombre');
+  return Rol.create({ nombre_rol });
+}
+
+// CU-MAESTRA | RF-001 | E13 - actualizarRol()
+export async function actualizarRol(id_rol, { nombre_rol }) {
+  const rol = await Rol.findByPk(id_rol);
+  if (!rol) throw new HttpError(404, 'Rol no encontrado');
+  const duplicado = await Rol.findOne({ where: { nombre_rol, id_rol: { [Op.ne]: id_rol } } });
+  if (duplicado) throw new HttpError(409, 'Ya existe un rol con ese nombre');
+  await rol.update({ nombre_rol });
+  return rol;
+}
+
+// CU-MAESTRA | RF-001 | E13 - eliminarRol()
+export async function eliminarRol(id_rol) {
+  const rol = await Rol.findByPk(id_rol);
+  if (!rol) throw new HttpError(404, 'Rol no encontrado');
+  const enUso = await Usuario.count({ where: { id_rol } });
+  if (enUso > 0) throw new HttpError(409, 'No se puede eliminar: hay usuarios asignados a este rol');
+  await rol.destroy();
+}
 
 // CU-11 | RF-016 | E13 - listarOrganizaciones()
 export async function listarOrganizaciones({ estado, q } = {}) {
