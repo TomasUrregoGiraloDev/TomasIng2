@@ -5,7 +5,7 @@ import { Input } from '../components/Input.jsx';
 import { Button } from '../components/Button.jsx';
 import { EmptyState } from '../components/EmptyState.jsx';
 
-// CU-MAESTRA | RF-006 | E13 - AdminCategorias (CRUDL tabla maestra CATEGORIA)
+// HU16 | RF-006 | E13 - AdminCategorias (CRUDL tabla maestra CATEGORIA)
 export function AdminCategorias() {
   const [lista, setLista] = useState([]);
   const [loading, setLoading] = useState(true);
