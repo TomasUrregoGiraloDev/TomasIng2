@@ -12,19 +12,19 @@ import {
 import { HttpError } from '../middlewares/error.js';
 import { crearNotificacion } from './NotificacionService.js';
 
-// CU-MAESTRA | RF-001 | E13 - listarRoles()
+// HU10 | RF-001 | E13 - listarRoles()
 export async function listarRoles() {
   return Rol.findAll({ order: [['id_rol', 'ASC']] });
 }
 
-// CU-MAESTRA | RF-001 | E13 - crearRol()
+// HU10 | RF-001 | E13 - crearRol()
 export async function crearRol({ nombre_rol }) {
   const existe = await Rol.findOne({ where: { nombre_rol } });
   if (existe) throw new HttpError(409, 'Ya existe un rol con ese nombre');
   return Rol.create({ nombre_rol });
 }
 
-// CU-MAESTRA | RF-001 | E13 - actualizarRol()
+// HU10 | RF-001 | E13 - actualizarRol()
 export async function actualizarRol(id_rol, { nombre_rol }) {
   const rol = await Rol.findByPk(id_rol);
   if (!rol) throw new HttpError(404, 'Rol no encontrado');
@@ -34,7 +34,7 @@ export async function actualizarRol(id_rol, { nombre_rol }) {
   return rol;
 }
 
-// CU-MAESTRA | RF-001 | E13 - eliminarRol()
+// HU10 | RF-001 | E13 - eliminarRol()
 export async function eliminarRol(id_rol) {
   const rol = await Rol.findByPk(id_rol);
   if (!rol) throw new HttpError(404, 'Rol no encontrado');
@@ -43,7 +43,7 @@ export async function eliminarRol(id_rol) {
   await rol.destroy();
 }
 
-// CU-11 | RF-016 | E13 - listarOrganizaciones()
+// HU16 | RF-016 | E13 - listarOrganizaciones()
 export async function listarOrganizaciones({ estado, q } = {}) {
   const where = {};
   if (estado) where.estado_verificacion = estado;
@@ -68,7 +68,7 @@ export async function listarOrganizaciones({ estado, q } = {}) {
   return orgs.map((o) => ({ ...o.toJSON(), total_actividades: mapa[o.id_organizacion] || 0 }));
 }
 
-// CU-11 | RF-016 | E13 - cambiarEstadoOrganizacion()
+// HU16 | RF-016 | E13 - cambiarEstadoOrganizacion()
 export async function cambiarEstadoOrganizacion(id_organizacion, nuevoEstado) {
   const valid = ['PENDIENTE', 'VERIFICADA', 'SUSPENDIDA'];
   if (!valid.includes(nuevoEstado)) throw new HttpError(400, 'Estado invalido');
@@ -86,7 +86,7 @@ export async function cambiarEstadoOrganizacion(id_organizacion, nuevoEstado) {
   return org;
 }
 
-// CU-12 | RF-017 | E13 - eliminarActividad()
+// HU17 | RF-017 | E13 - eliminarActividad()
 export async function eliminarActividad(id_actividad) {
   const act = await Actividad.findByPk(id_actividad);
   if (!act) throw new HttpError(404, 'Actividad no encontrada');

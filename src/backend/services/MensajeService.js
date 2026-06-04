@@ -15,7 +15,7 @@ const includeUsuarios = [
   { model: Usuario, as: 'destinatario', attributes: ['id_usuario', 'correo_electronico'] },
 ];
 
-// CU-10 | RF-013 | E13 - listarConversacionesUsuario()
+// HU15 | RF-013 | E13 - listarConversacionesUsuario()
 export async function listarConversaciones(id_usuario) {
   const mensajes = await Mensaje.findAll({
     where: {
@@ -41,7 +41,7 @@ export async function listarConversaciones(id_usuario) {
   return Array.from(map.values());
 }
 
-// CU-10 | RF-015 | E13 - obtenerConversacion()
+// HU15 | RF-013 | E13 - obtenerConversacion()
 export async function obtenerConversacion(id_usuario, id_otro) {
   const mensajes = await Mensaje.findAll({
     where: {
@@ -59,7 +59,7 @@ export async function obtenerConversacion(id_usuario, id_otro) {
   return mensajes;
 }
 
-// CU-10 | RF-013 | E13 - enviarMensaje()
+// HU15 | RF-013 | E13 - enviarMensaje()
 export async function enviar(id_usuario, { id_usuario_destinatario, contenido, id_actividad }) {
   if (id_usuario_destinatario === id_usuario) throw new HttpError(400, 'No puedes enviarte mensajes a ti mismo');
   const destinatario = await Usuario.findByPk(id_usuario_destinatario);

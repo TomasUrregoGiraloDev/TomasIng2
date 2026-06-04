@@ -27,7 +27,7 @@ export async function marcarLeida(id_usuario, id_notificacion) {
   return notif;
 }
 
-// CU-TRANSACCIONAL | RF-010 | E13 - listarTodas() — admin: todas las notificaciones con FK usuario visible
+// HU16 | RF-010 | E13 - listarTodas() — admin: todas las notificaciones con FK usuario visible
 export async function listarTodas() {
   return Notificacion.findAll({
     include: [{ model: Usuario, as: 'usuario', attributes: ['id_usuario', 'correo_electronico'] }],
@@ -35,7 +35,7 @@ export async function listarTodas() {
   });
 }
 
-// CU-TRANSACCIONAL | RF-011 | E13 - eliminar() — admin elimina una notificacion
+// HU17 | RF-011 | E13 - eliminar() — admin elimina una notificacion
 export async function eliminar(id_notificacion) {
   const notif = await Notificacion.findByPk(id_notificacion);
   if (!notif) throw new HttpError(404, 'Notificacion no encontrada');

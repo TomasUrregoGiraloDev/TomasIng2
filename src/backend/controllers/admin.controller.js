@@ -1,8 +1,8 @@
 // ============================================================
 // Controlador admin.controller
-// Tabla(s) BD : ROL
-// HU          : HU10, HU16, HU17
-// RF          : RF-001, RF-015, RF-016, RF-017
+// Tabla(s) BD : ROL, NOTIFICACION
+// HU          : HU07, HU10, HU16, HU17
+// RF          : RF-001, RF-010, RF-011, RF-015, RF-016, RF-017
 // RNF         : RNF-016, RNF-017
 // ============================================================
 import { z } from 'zod';
@@ -53,19 +53,19 @@ export async function generarReporte(_req, res, next) {
   catch (e) { next(e); }
 }
 
-// CU-TRANSACCIONAL | RF-010 | E13 - listarNotificaciones()
+// HU16 | RF-010 | E13 - listarNotificaciones()
 export async function listarNotificaciones(_req, res, next) {
   try { res.json(await NotificacionService.listarTodas()); }
   catch (e) { next(e); }
 }
 
-// CU-TRANSACCIONAL | RF-010 | E13 - crearNotificacion()
+// HU07 | RF-010 | E13 - crearNotificacion()
 export async function crearNotificacionAdmin(req, res, next) {
   try { res.status(201).json(await NotificacionService.crearNotificacion(req.body)); }
   catch (e) { next(e); }
 }
 
-// CU-TRANSACCIONAL | RF-011 | E13 - eliminarNotificacion()
+// HU17 | RF-011 | E13 - eliminarNotificacion()
 export async function eliminarNotificacion(req, res, next) {
   try {
     await NotificacionService.eliminar(Number(req.params.id));
@@ -73,25 +73,25 @@ export async function eliminarNotificacion(req, res, next) {
   } catch (e) { next(e); }
 }
 
-// CU-MAESTRA | RF-001 | E13 - listarRoles()
+// HU10 | RF-001 | E13 - listarRoles()
 export async function listarRoles(_req, res, next) {
   try { res.json(await Service.listarRoles()); }
   catch (e) { next(e); }
 }
 
-// CU-MAESTRA | RF-001 | E13 - crearRol()
+// HU10 | RF-001 | E13 - crearRol()
 export async function crearRol(req, res, next) {
   try { res.status(201).json(await Service.crearRol(req.body)); }
   catch (e) { next(e); }
 }
 
-// CU-MAESTRA | RF-001 | E13 - actualizarRol()
+// HU10 | RF-001 | E13 - actualizarRol()
 export async function actualizarRol(req, res, next) {
   try { res.json(await Service.actualizarRol(Number(req.params.id), req.body)); }
   catch (e) { next(e); }
 }
 
-// CU-MAESTRA | RF-001 | E13 - eliminarRol()
+// HU10 | RF-001 | E13 - eliminarRol()
 export async function eliminarRol(req, res, next) {
   try {
     await Service.eliminarRol(Number(req.params.id));

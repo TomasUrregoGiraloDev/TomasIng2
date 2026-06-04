@@ -5,7 +5,7 @@ import { Input } from '../components/Input.jsx';
 import { Button } from '../components/Button.jsx';
 import { EmptyState } from '../components/EmptyState.jsx';
 
-// CU-TRANSACCIONAL | RF-010 | E13 - AdminNotificaciones (CRUDL tabla transaccional NOTIFICACION)
+// HU16 | RF-010 | E13 - AdminNotificaciones (CRUDL tabla transaccional NOTIFICACION)
 export function AdminNotificaciones() {
   const [lista, setLista] = useState([]);
   const [listaUsuarios, setListaUsuarios] = useState([]);
