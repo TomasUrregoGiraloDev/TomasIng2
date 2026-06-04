@@ -1,7 +1,7 @@
 import { NavLink, useNavigate } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext.jsx';
 import { useEffect, useState } from 'react';
-import { Bell, LogOut, User, MessageSquare, Search, LayoutDashboard, FileText, ListChecks, Building2, BarChart3, Heart } from 'lucide-react';
+import { Bell, LogOut, User, MessageSquare, Search, LayoutDashboard, FileText, ListChecks, Building2, BarChart3, Heart, Tag } from 'lucide-react';
 import { notificaciones } from '../services/api.js';
 
 const NAV_BY_ROL = {
@@ -20,6 +20,8 @@ const NAV_BY_ROL = {
     { to: '/admin', label: 'Resumen', icon: LayoutDashboard },
     { to: '/admin/organizaciones', label: 'Organizaciones', icon: Building2 },
     { to: '/admin/inscripciones', label: 'Solicitudes', icon: ListChecks },
+    { to: '/admin/categorias', label: 'Categorias', icon: Tag },
+    { to: '/admin/notificaciones', label: 'Notificaciones', icon: Bell },
     { to: '/admin/reportes', label: 'Reportes', icon: BarChart3 },
   ],
 };

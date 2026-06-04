@@ -23,6 +23,7 @@ import { AdminOrganizaciones } from './pages/AdminOrganizaciones.jsx';
 import { AdminInscripciones } from './pages/AdminInscripciones.jsx';
 import { AdminReportes } from './pages/AdminReportes.jsx';
 import { AdminCategorias } from './pages/AdminCategorias.jsx';
+import { AdminNotificaciones } from './pages/AdminNotificaciones.jsx';
 
 import { Mensajes } from './pages/Mensajes.jsx';
 import { Notificaciones } from './pages/Notificaciones.jsx';
@@ -53,6 +54,7 @@ export default function App() {
           <Route path="/admin/inscripciones" element={<ProtectedRoute roles={['ADMIN']}><AdminInscripciones /></ProtectedRoute>} />
           <Route path="/admin/reportes" element={<ProtectedRoute roles={['ADMIN']}><AdminReportes /></ProtectedRoute>} />
           <Route path="/admin/categorias" element={<ProtectedRoute roles={['ADMIN']}><AdminCategorias /></ProtectedRoute>} />
+          <Route path="/admin/notificaciones" element={<ProtectedRoute roles={['ADMIN']}><AdminNotificaciones /></ProtectedRoute>} />
 
           <Route path="/mensajes" element={<ProtectedRoute><Mensajes /></ProtectedRoute>} />
           <Route path="/notificaciones" element={<ProtectedRoute><Notificaciones /></ProtectedRoute>} />

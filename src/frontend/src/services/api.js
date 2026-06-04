@@ -87,4 +87,7 @@ export const admin = {
   crearCategoria: (data) => api.post('/admin/categorias', data).then((r) => r.data),
   actualizarCategoria: (id, data) => api.put(`/admin/categorias/${id}`, data).then((r) => r.data),
   eliminarCategoria: (id) => api.delete(`/admin/categorias/${id}`).then((r) => r.data),
+  listarNotificaciones: () => api.get('/admin/notificaciones').then((r) => r.data),
+  crearNotificacion: (data) => api.post('/admin/notificaciones', data).then((r) => r.data),
+  eliminarNotificacion: (id) => api.delete(`/admin/notificaciones/${id}`).then((r) => r.data),
 };
