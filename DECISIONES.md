@@ -292,3 +292,27 @@ Esta seccion documenta cada diferencia entre el diccionario de datos / DDL del d
 **Impacto en RF-011:** La implementacion actual de RF-011 genera notificaciones en la plataforma cuando se aprueba o rechaza una inscripcion (tipo INSCRIPCION_APROBADA/RECHAZADA), no por coincidencia de categorias. El filtrado por interes queda documentado como mejora futura.
 
 **Artefactos afectados:** E7 (diccionario de datos), E11 (DDL), E12 (diagrama de clases), M7 (matriz de tablas).
+
+---
+
+### Cambio M-11 — Tabla PERFIL_VOLUNTARIO: adicion de `telefono`
+
+**Documento de diseno:** Define `id_voluntario`, `nombre`, `apellido`, `id_usuario`. No incluye campo de contacto telefonico.
+
+**Implementacion actual:** Se agrego `telefono VARCHAR(20) NULL`.
+
+**Razon del cambio:** El formulario de registro de voluntarios (E16 wireframes) solicita un numero de contacto para que las organizaciones puedan coordinar la logistica de las actividades. Sin este campo el perfil del voluntario no tiene ningun canal de contacto directo distinto al correo electronico.
+
+**Artefactos afectados:** E7, E11.
+
+---
+
+### Cambio M-12 — Tabla MENSAJE: adicion de `id_actividad`
+
+**Documento de diseno:** Define `id_mensaje`, `contenido`, `fecha_envio`, `id_remitente`, `id_destinatario`. No incluye referencia a una actividad. M-07 documento el renombre de columnas y la adicion de `leido`, pero no este campo.
+
+**Implementacion actual:** Se agrego `id_actividad INT NULL` (FK opcional a ACTIVIDAD).
+
+**Razon del cambio:** HU15 dice "el voluntario quiere enviar mensajes directos a la organizacion una vez que su inscripcion es aprobada". Para mostrar en el hilo de mensajes el contexto de la actividad asociada (nombre, fecha) sin requerir que el usuario lo escriba manualmente, el mensaje necesita una referencia opcional a la actividad. El campo es nullable: los mensajes directos genericos no requieren actividad asociada.
+
+**Artefactos afectados:** E7, E11, E13 (diagrama de secuencia de mensajeria).
