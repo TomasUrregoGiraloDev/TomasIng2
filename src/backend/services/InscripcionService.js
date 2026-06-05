@@ -40,13 +40,16 @@ export async function crear(id_usuario, { id_actividad }) {
   return sequelize.transaction(async (t) => {
     const actividad = await Actividad.findByPk(id_actividad, { transaction: t, lock: t.LOCK.UPDATE });
     if (!actividad) throw new HttpError(404, 'Actividad no encontrada');
+    // RN-01 | CU-02 | RF-007 | HU03 — no se puede inscribir a una actividad cancelada
     if (actividad.estado_actividad === 'CANCELADA') throw new HttpError(409, 'Esta actividad fue cancelada');
+    // RN-02 | CU-02 | RF-007 | HU03 | RNF-003 — RF-007 exige restar 1 cupo al inscribirse; si no hay cupos la inscripcion no procede
     if (actividad.cupos_disponibles <= 0) throw new HttpError(409, 'No hay cupos disponibles');
 
     const existente = await Inscripcion.findOne({
       where: { id_voluntario: voluntario.id_voluntario, id_actividad },
       transaction: t,
     });
+    // RN-03 | CU-02 | RF-007 | HU03 — un voluntario no puede tener dos inscripciones activas en la misma actividad
     if (existente) throw new HttpError(409, 'Ya estas inscrito en esta actividad');
 
     return Inscripcion.create(
@@ -85,8 +88,8 @@ export async function listar(id_usuario, rol, { estado, id_actividad } = {}) {
 }
 
 // CU-07 | RF-009 | E13 - cambiarEstadoInscripcion()
-// Regla: al APROBAR decrementa cupos_disponibles y notifica al voluntario.
 export async function cambiarEstado(id_usuario, rol, id_inscripcion, nuevoEstado) {
+  // RN-04 | CU-07 | RF-009 | HU06 — solo se aceptan los estados definidos en el modelo de datos (doc. seccion normalizacion)
   const valid = ['APROBADA', 'RECHAZADA', 'ASISTIO', 'NO_ASISTIO'];
   if (!valid.includes(nuevoEstado)) throw new HttpError(400, 'Estado invalido');
 
@@ -100,6 +103,7 @@ export async function cambiarEstado(id_usuario, rol, id_inscripcion, nuevoEstado
     });
     if (!ins) throw new HttpError(404, 'Inscripcion no encontrada');
 
+    // RN-05 | CU-07 | RF-009 | HU06 — solo la organizacion duena de la actividad o un ADMIN puede gestionar sus inscripciones
     if (rol === 'ORGANIZACION') {
       const org = await getOrgByUsuario(id_usuario);
       if (!org || ins.actividad.id_organizacion !== org.id_organizacion) {
@@ -112,11 +116,13 @@ export async function cambiarEstado(id_usuario, rol, id_inscripcion, nuevoEstado
     const eraPendiente = ins.estado_solicitud === 'PENDIENTE';
     const eraAprobada = ins.estado_solicitud === 'APROBADA';
 
+    // RN-06 | CU-07 | RF-007 + RF-009 | HU06 — al aprobar se descuenta 1 cupo disponible (RF-007 define que la inscripcion resta cupos)
     if (nuevoEstado === 'APROBADA' && eraPendiente) {
       const act = await Actividad.findByPk(ins.id_actividad, { transaction: t, lock: t.LOCK.UPDATE });
       if (act.cupos_disponibles <= 0) throw new HttpError(409, 'Sin cupos disponibles');
       await act.update({ cupos_disponibles: act.cupos_disponibles - 1 }, { transaction: t });
     }
+    // RN-07 | CU-07 | RF-009 | HU06 — al rechazar una inscripcion que ya estaba aprobada, se devuelve el cupo sin superar el total
     if (nuevoEstado === 'RECHAZADA' && eraAprobada) {
       const act = await Actividad.findByPk(ins.id_actividad, { transaction: t });
       await act.update(
@@ -127,6 +133,7 @@ export async function cambiarEstado(id_usuario, rol, id_inscripcion, nuevoEstado
 
     await ins.update({ estado_solicitud: nuevoEstado }, { transaction: t });
 
+    // RN-08 | CU-07 | RF-010 | HU07 — RF-010 exige notificar al voluntario cuando su inscripcion cambia de estado
     const id_usuario_voluntario = ins.voluntario.id_usuario;
     if (nuevoEstado === 'APROBADA') {
       await crearNotificacion({
