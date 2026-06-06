@@ -8,7 +8,7 @@
 import { Resena, Inscripcion, PerfilVoluntario } from '../models/index.js';
 import { HttpError } from '../middlewares/error.js';
 
-// CU-06 | RF-014 | E13 - registrarResena()
+// CU-06 | RF-014 | E13 - crear() | Doc E12: Voluntario.calificarActividad()
 // Permite multiples reseñas por inscripcion (ver DECISIONES.md #09).
 export async function crear(id_usuario, { id_inscripcion, calificacion, comentario }) {
   const ins = await Inscripcion.findByPk(id_inscripcion, {

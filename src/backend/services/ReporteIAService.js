@@ -32,6 +32,7 @@ Datos:
 Devuelve unicamente el informe en texto plano, sin titulos en mayusculas decorativas.`;
 }
 
+// CU-03 | RF-015 | E13 - generarReporte() | Doc E12: Organizacion.generarReporteImpacto()
 export async function generarReporte() {
   const stats = await obtenerEstadisticas();
 

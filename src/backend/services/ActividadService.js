@@ -17,6 +17,7 @@ const includeFull = [
   { model: Ciudad, as: 'ciudad' },
 ];
 
+// CU-01 | RF-006 | E13 - listar() | Doc E12: Voluntario.buscarActividades()
 export async function listar({ q, id_categoria, id_ciudad, fecha, id_organizacion, soloActivas = true } = {}) {
   const where = {};
   if (q) where.titulo = { [Op.like]: `%${q}%` };
@@ -60,7 +61,7 @@ async function getOrgVerificadaDelUsuario(id_usuario) {
   return org;
 }
 
-// CU-04 | RF-005 | E13 - publicarActividad()
+// CU-04 | RF-005 | E13 - crear() | Doc E12: Organizacion.publicarActividad()
 export async function crear(id_usuario, datos) {
   const org = await getOrgVerificadaDelUsuario(id_usuario);
   const act = await Actividad.create({
@@ -79,7 +80,7 @@ export async function crear(id_usuario, datos) {
   return obtener(act.id_actividad);
 }
 
-// CU-08 | RF-005 | E13 - editarActividad()
+// CU-08 | RF-005 | E13 - actualizar() | Doc E12: Organizacion.editarActividad()
 export async function actualizar(id_usuario, id, datos) {
   const org = await PerfilOrganizacion.findOne({ where: { id_usuario } });
   const act = await Actividad.findByPk(id);
@@ -91,7 +92,7 @@ export async function actualizar(id_usuario, id, datos) {
   return obtener(id);
 }
 
-// CU-09 | RF-005 | E13 - cancelarActividad()
+// CU-09 | RF-005 | E13 - cancelar() | Doc E12: Organizacion.cancelarActividad()
 export async function cancelar(id_usuario, id) {
   const org = await PerfilOrganizacion.findOne({ where: { id_usuario } });
   const act = await Actividad.findByPk(id);

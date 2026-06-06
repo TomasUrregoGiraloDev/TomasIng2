@@ -20,7 +20,7 @@ function tokenPayload(usuario, nombreRol) {
   return { sub: usuario.id_usuario, email: usuario.correo_electronico, rol: nombreRol };
 }
 
-// CU-01 | RF-001 | E13 - registrarVoluntario()
+// CU-01 | RF-001 | E13 - registrarVoluntario() | Doc E12: Usuario.realizarLogin()
 export async function registrarVoluntario(datos) {
   const rol = await getRolByNombre('VOLUNTARIO');
   const contrasena = await hashPassword(datos.contrasena);
@@ -60,7 +60,7 @@ export async function registrarOrganizacion(datos) {
   return tokenize(usuario, rol.nombre_rol);
 }
 
-// CU-01 | RF-001 | E13 - login()
+// CU-01 | RF-001 | E13 - login() | Doc E12: Usuario.realizarLogin()
 export async function login({ correo_electronico, contrasena }) {
   const usuario = await Usuario.scope('withPassword').findOne({
     where: { correo_electronico },

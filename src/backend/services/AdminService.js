@@ -68,7 +68,7 @@ export async function listarOrganizaciones({ estado, q } = {}) {
   return orgs.map((o) => ({ ...o.toJSON(), total_actividades: mapa[o.id_organizacion] || 0 }));
 }
 
-// HU16 | RF-016 | E13 - cambiarEstadoOrganizacion()
+// HU16 | RF-016 | E13 - cambiarEstadoOrganizacion() | Doc E12: Administrador.verificarOrganizacion() / Administrador.suspenderAcceso()
 export async function cambiarEstadoOrganizacion(id_organizacion, nuevoEstado) {
   const valid = ['PENDIENTE', 'VERIFICADA', 'SUSPENDIDA'];
   if (!valid.includes(nuevoEstado)) throw new HttpError(400, 'Estado invalido');
@@ -86,7 +86,7 @@ export async function cambiarEstadoOrganizacion(id_organizacion, nuevoEstado) {
   return org;
 }
 
-// HU17 | RF-017 | E13 - eliminarActividad()
+// HU17 | RF-017 | E13 - eliminarActividad() | Doc E12: Administrador.moderarContenido()
 export async function eliminarActividad(id_actividad) {
   const act = await Actividad.findByPk(id_actividad);
   if (!act) throw new HttpError(404, 'Actividad no encontrada');

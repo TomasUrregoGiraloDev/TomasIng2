@@ -22,7 +22,7 @@ export async function obtenerPerfil(id_usuario, rol) {
   return { perfil, usuario };
 }
 
-// CU-01 | RF-002 | E13 - actualizarPerfil()
+// CU-01 | RF-002 | E13 - actualizarPerfil() | Doc E12: Organizacion.pausarPerfil() (estado_activo: false)
 export async function actualizarPerfil(id_usuario, rol, datos) {
   const perfil = await obtenerPerfilPorUsuario(id_usuario, rol);
   if (!perfil) throw new HttpError(404, 'Perfil no encontrado');

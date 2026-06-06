@@ -34,7 +34,7 @@ async function getOrgByUsuario(id_usuario) {
   return PerfilOrganizacion.findOne({ where: { id_usuario } });
 }
 
-// CU-02 | RF-007 | E13 - inscribirseActividad()
+// CU-02 | RF-007 | E13 - crear() | Doc E12: Voluntario.inscribirse()
 export async function crear(id_usuario, { id_actividad }) {
   const voluntario = await getVoluntarioByUsuario(id_usuario);
   return sequelize.transaction(async (t) => {
@@ -59,7 +59,7 @@ export async function crear(id_usuario, { id_actividad }) {
   });
 }
 
-// CU-05 | RF-008 | E13 - listarInscripciones()
+// CU-05 | RF-008 | E13 - listar() | Doc E12: Voluntario.consultarHistorial()
 export async function listar(id_usuario, rol, { estado, id_actividad } = {}) {
   const where = {};
   if (estado) where.estado_solicitud = estado;
@@ -87,7 +87,7 @@ export async function listar(id_usuario, rol, { estado, id_actividad } = {}) {
   return Inscripcion.findAll({ where, include: includeFull, order: [['fecha_inscripcion', 'DESC']] });
 }
 
-// CU-07 | RF-009 | E13 - cambiarEstadoInscripcion()
+// CU-07 | RF-009 | E13 - cambiarEstado() | Doc E12: Organizacion.gestionarInscritos()
 export async function cambiarEstado(id_usuario, rol, id_inscripcion, nuevoEstado) {
   // RN-04 | CU-07 | RF-009 | HU06 — solo se aceptan los estados definidos en el modelo de datos (doc. seccion normalizacion)
   const valid = ['APROBADA', 'RECHAZADA', 'ASISTIO', 'NO_ASISTIO'];

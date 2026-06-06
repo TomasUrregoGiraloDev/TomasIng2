@@ -59,7 +59,7 @@ export async function obtenerConversacion(id_usuario, id_otro) {
   return mensajes;
 }
 
-// HU15 | RF-013 | E13 - enviarMensaje()
+// HU15 | RF-013 | E13 - enviar() | Doc E12: Voluntario.enviarMensajeDirecto() / Mensaje.enviarMensajeGrupal()
 export async function enviar(id_usuario, { id_usuario_destinatario, contenido, id_actividad }) {
   if (id_usuario_destinatario === id_usuario) throw new HttpError(400, 'No puedes enviarte mensajes a ti mismo');
   const destinatario = await Usuario.findByPk(id_usuario_destinatario);

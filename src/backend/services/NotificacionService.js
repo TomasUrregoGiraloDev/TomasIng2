@@ -8,7 +8,7 @@
 import { Notificacion, Usuario } from '../models/index.js';
 import { HttpError } from '../middlewares/error.js';
 
-// CU-10 | RF-010 | E13 - crearNotificacion()
+// CU-10 | RF-010 | E13 - crearNotificacion() | Doc E12: Notificacion.enviarPush()
 export async function crearNotificacion({ id_usuario, tipo, titulo, mensaje }) {
   return Notificacion.create({ id_usuario, tipo, titulo, mensaje });
 }
@@ -18,7 +18,7 @@ export async function listarPorUsuario(id_usuario) {
   return Notificacion.findAll({ where: { id_usuario }, order: [['fecha_creacion', 'DESC']] });
 }
 
-// CU-10 | RF-010 | E13 - marcarLeida()
+// CU-10 | RF-010 | E13 - marcarLeida() | Doc E12: Notificacion.marcarComoLeida()
 export async function marcarLeida(id_usuario, id_notificacion) {
   const notif = await Notificacion.findByPk(id_notificacion);
   if (!notif) throw new HttpError(404, 'Notificacion no encontrada');
