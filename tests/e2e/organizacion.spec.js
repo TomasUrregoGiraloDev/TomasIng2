@@ -1,6 +1,14 @@
 import { test, expect } from '@playwright/test';
 import { login, USERS } from './helpers.js';
 
+// BUG-02: la fecha estaba fija ('2026-09-01T08:00') y el caso empezo a fallar al
+// quedar esa fecha en el pasado, porque el backend rechaza fechas pasadas al crear
+// (RF-005). Se calcula ahora relativa al dia de ejecucion.
+function fechaFutura(dias) {
+  const d = new Date(Date.now() + dias * 86_400_000);
+  return `${d.toISOString().slice(0, 10)}T08:00`;
+}
+
 test.describe('Organizacion', () => {
   test('organizacion verificada puede publicar una actividad', async ({ page }) => {
     await login(page, USERS.org);
@@ -10,7 +18,7 @@ test.describe('Organizacion', () => {
     await page.getByTestId('select-categoria').selectOption({ index: 1 });
     await page.getByTestId('select-ciudad').selectOption({ index: 1 });
     await page.getByTestId('input-direccion').fill('Parque del Rio, Medellin');
-    await page.getByTestId('input-fecha').fill('2026-09-01T08:00');
+    await page.getByTestId('input-fecha').fill(fechaFutura(90));
     await page.getByTestId('input-cupos').fill('20');
     await page.getByTestId('btn-publicar').click();
     await expect(page).toHaveURL(/\/organizacion\/actividades/);
