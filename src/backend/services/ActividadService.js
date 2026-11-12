@@ -88,6 +88,19 @@ export async function actualizar(id_usuario, id, datos) {
   if (!org || act.id_organizacion !== org.id_organizacion) {
     throw new HttpError(403, 'No puedes modificar esta actividad');
   }
+  // BUG-01 | CU-08 | RF-005: al crear se rechazaba una fecha pasada, al editar no.
+  // Solo se valida cuando la fecha cambia de valor, para no bloquear la edicion de
+  // los demas campos en una actividad cuya fecha ya paso.
+  if (datos.fecha_evento !== undefined) {
+    const nueva = new Date(datos.fecha_evento).getTime();
+    if (Number.isNaN(nueva)) {
+      throw new HttpError(400, 'fecha_evento: fecha invalida');
+    }
+    const vigente = new Date(act.fecha_evento).getTime();
+    if (nueva !== vigente && nueva < Date.now() - 60_000) {
+      throw new HttpError(400, 'fecha_evento: la fecha no puede estar en el pasado');
+    }
+  }
   await act.update(datos);
   return obtener(id);
 }
