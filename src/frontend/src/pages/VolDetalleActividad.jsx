@@ -37,10 +37,14 @@ export function VolDetalleActividad() {
     setConfirmando(true);
     setError(null);
     try {
-      await inscripciones.crear({ id_actividad: Number(id) });
+      const creada = await inscripciones.crear({ id_actividad: Number(id) });
       setModal(false);
       setExito('Tu inscripcion fue enviada. Recibiras una notificacion cuando la organizacion responda.');
-      setYaInscrito(true);
+      // BUG-04: aqui se llamaba a setYaInscrito(), que no existe: yaInscrito es un
+      // valor derivado de miInscripcion, no un estado. La excepcion la atrapaba el
+      // catch y se mostraba como error pese a que la inscripcion si se creaba, y
+      // ademas impedia refrescar los cupos. Se actualiza el estado del que deriva.
+      setMiInscripcion(creada);
       const actu = await actividades.obtener(id);
       setActividad(actu);
     } catch (e) {
